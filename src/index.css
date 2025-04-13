@@ -5,6 +5,8 @@
     --second-text-color: #727272;
     --white-gray-second-text-color: #acacac;
     --background-color: #fbfbfb;
+
+    box-sizing: border-box;
 }
 
 body {
@@ -46,3 +48,9 @@ a {
 .rc-slider-rail {
     background-color: #9de9ac;
 }
+
+/* @media screen and (max-width: 1200px)  {
+    body {
+        font-size: 12px;
+    }
+} */
