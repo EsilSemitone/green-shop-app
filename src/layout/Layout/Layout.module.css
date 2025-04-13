@@ -1,6 +1,6 @@
 .layout {
     display: flex;
     flex-direction: column;
-    padding: 1em 5em;
+    padding: 1em 7em;
     gap: 2em;
 }
