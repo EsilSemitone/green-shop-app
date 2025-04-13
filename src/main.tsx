@@ -5,6 +5,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 import { Layout } from './layout/Layout/Layout';
 import { Shop } from './pages/Shop/Shop';
 import { Product } from './pages/Product/Product';
+import { Cart } from './pages/Cart/Cart';
 
 
 const router = createBrowserRouter([
@@ -25,11 +26,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/cart',
-                element: <>cart</>,
-            },
-            {
-                path: '/checkout',
-                element: <>checkout</>,
+                element: <Cart></Cart>,
             },
             {
                 path: '/blog',

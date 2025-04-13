@@ -10,7 +10,6 @@ import Slider from 'rc-slider';
 import { sizeMap } from './helpers/size-map';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { useNavigate } from 'react-router';
-import { ProductCardButton } from '../../components/ProductCardButton/ProductCardButton';
 import { NavigateButton } from '../../components/NavigateButton/NavigateButton';
 import { BlogBlock } from '../../components/BlogBlock/BlogBlock';
 

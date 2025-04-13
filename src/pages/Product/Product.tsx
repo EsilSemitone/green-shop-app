@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { NavigateButton } from '../../components/NavigateButton/NavigateButton';
 import { sizeMap } from './helpers/size-map';
 import { Button } from '../../components/Button/Button';
+import { SimilarProducts } from '../../components/SimilarProducts/SimilarProducts';
+import { CartButton } from '../../components/CartButton/CartButton';
 
 export function Product() {
 
@@ -48,6 +50,17 @@ Pellentesque aliquet, sem eget laoreet ultrices, ipsum metus feugiat sem, quis f
         ]
 
     }
+
+    const similarProducts = [
+        {uuid: "1" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
+        {uuid: "2" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
+        {uuid: "3" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
+        {uuid: "4" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
+        {uuid: "5" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
+        {uuid: "6" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
+        {uuid: "7" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
+        {uuid: "8" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
+    ] 
 
     const getStarsRating = () => {
         const res = []
@@ -110,9 +123,9 @@ Pellentesque aliquet, sem eget laoreet ultrices, ipsum metus feugiat sem, quis f
                 </div>
                 <div className={styles['product-detail--interaction']}>
                     <div className={styles['count-buttons']}>
-                        <NavigateButton className={styles['count-cart-button']}>{"-"}</NavigateButton>
+                        <CartButton>{"-"}</CartButton>
                         <span>{1}</span>
-                        <NavigateButton className={styles['count-cart-button']}>{"+"}</NavigateButton>
+                        <CartButton>{"+"}</CartButton>
                     </div>
                     <div className={styles['other-buttons']}>
                         <Button>Buy NOW</Button>
@@ -135,7 +148,10 @@ Pellentesque aliquet, sem eget laoreet ultrices, ipsum metus feugiat sem, quis f
             <p>{productPage.product.description}</p>
         </div>
 
-        <div></div>
+        <div className={styles["similar-products"]}>
+            <div className={styles['similar-products--title']}>Releted Products</div>
+            <SimilarProducts  className={styles["swiper"]} similarProducts={similarProducts}></SimilarProducts>
+        </div>
     </div>
     );
 }
