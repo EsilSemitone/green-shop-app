@@ -1,0 +1,23 @@
+.footer-cart {
+    max-width: 204px;
+    max-height: 195px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.footer-cart img {
+    max-width: 6em;
+}
+
+.footer-cart--title {
+    font-size: 1.1em;
+    font-weight: 700;
+}
+
+.footer-cart--description {
+    font-size: 1em;
+    font-weight: 400;
+    color: var(--second-text-color);
+}

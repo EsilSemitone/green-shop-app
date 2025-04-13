@@ -1,0 +1,141 @@
+.shop {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
+}
+
+.shop-top-panel {
+    display: flex;
+    background-color: var(--background-color);
+    justify-content: space-between;
+}
+
+.info-block {
+    position: relative;
+    padding: 4em 3em;
+    max-width: 45%;
+}
+
+.info-block h1 {
+    font-size: 5em;
+    line-height: 100%;
+    text-transform: uppercase;
+}
+
+.info-block--title {
+    position: absolute;
+    left: 3em;
+    top: 5em;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.green {
+    color: var(--green);
+}
+
+.info-block p {
+    font-weight: 400;
+    color: var(--second-text-color);
+}
+
+.content {
+    display: flex;
+    gap: 3em;
+}
+
+.filter-menu {
+    padding: 0.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
+    width: 26%;
+    background-color: var(--background-color);
+    padding-bottom: 3em;
+}
+
+.filter-menu--item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8em;
+}
+
+.filter-menu--title {
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+.categories-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.category-inner--block {
+    padding: 0 1em;
+}
+
+.categories-item {
+    color: var(--second-text-color);
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+
+    &:hover {
+        color: var(--green);
+    }
+}
+
+.active {
+    color: var(--green);
+    font-weight: 700;
+}
+
+.slider {
+    width: 80%;
+    color: var(--green);
+}
+
+.price-info {
+    font-weight: 400;
+    color: var(--second-text-color);
+}
+
+.price-info--range {
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+.price-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.products-container {
+    display: flex;
+    gap: 3em;
+    flex-wrap: wrap;
+}
+
+.products {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+}
+
+.navigate-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.navigate-container--inner {
+    display: flex;
+    gap: 0.3em;
+}
+
+.navigate-button:hover {
+    background-color: var(--background-color);
+}

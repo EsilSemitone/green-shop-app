@@ -1,0 +1,24 @@
+.blog-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 2em;
+}
+
+.short-description {
+    font-size: 1em;
+    color: var(--second-text-color);
+}
+
+.posts-container {
+    padding-top: 1em;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 4em;
+}
