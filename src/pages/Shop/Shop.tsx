@@ -185,9 +185,9 @@ export function Shop() {
                         { (() => {
                             const res = []
                             for (let i = 1; i < pages + 1; i++ ) {
-                                res.push(<NavigateButton className={styles['navigate-button']}>{i}</NavigateButton>) 
+                                res.push(<NavigateButton key={i} className={styles['navigate-button']}>{i}</NavigateButton>) 
                             }
-                            res.push(<NavigateButton className={styles['navigate-button']}>{">"}</NavigateButton>)
+                            res.push(<NavigateButton key={">"} className={styles['navigate-button']}>{">"}</NavigateButton>)
                             return res
                         })()
                         }

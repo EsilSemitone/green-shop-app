@@ -29,7 +29,6 @@
     
 }
 .product-cart:hover {
-    border-top: 0.5px solid var(--green);
     transform: scale(1.03, 1.03);
     transition: 0.5s;
 
