@@ -3,9 +3,12 @@ import { IHeaderProps } from './Header-props';
 import styles from './Header.module.css';
 import cn from 'classnames';
 import { Button } from '../Button/Button';
+import { useState } from 'react';
+import { OrderModal } from '../OrderModal/OrderModal';
 
 export function Header({ className, ...props }: IHeaderProps) {
     const cartCount = 6;
+    const [modalIsOpen, setModalIsOpen] = useState(false)
 
     return (
         <header {...props} className={cn(styles['header'], className)}>
@@ -30,11 +33,15 @@ export function Header({ className, ...props }: IHeaderProps) {
                     <img src="/icons/cart-icon.svg" alt="Иконка корзины" />
                     <div className={styles['cart-count']}>{cartCount}</div>
                 </Link>
-                <Button>
+                <Button onClick={() => {
+                        setModalIsOpen(true)
+                    }} >
                     <img src="/icons/login-icon.svg" alt="Иконка входа" />
                     Login
                 </Button>
             </div>
+            <OrderModal isOpen={modalIsOpen} onClose={() => {setModalIsOpen(false)}}>
+            </OrderModal>
         </header>
     );
 }

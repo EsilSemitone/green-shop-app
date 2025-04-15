@@ -229,14 +229,13 @@
     padding: 1em;
 }
 
-.similar-products--list {
+/* .similar-products--list {
     padding: 3em 0 5em 0;
     display: flex;
     justify-content: space-around;
     gap: 1em;
-}
+} */
 
 .swiper {
     width: 100%;
-    /* overflow-y: auto; */
 }

@@ -56,7 +56,7 @@
 }
 
 .search-input:hover input {
-    width: 5em;
+    width: 10em;
     border: 1px solid #eaeaea;
 }
 
