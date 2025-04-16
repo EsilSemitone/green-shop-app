@@ -14,7 +14,12 @@ export function ForgotPasswordForm({ className, ...props }: IForgotPasswordFormP
         <div className={styles['login-form--container']}>
             <div className={styles['title']}>Введите почту для сброса пароля.</div>
             <form {...props} className={cn(styles['login-form'], className)} onSubmit={submit}>
-                <Input className={cn(styles['login-form--input'])} type="text" id="email" placeholder="Username"></Input>
+                <Input
+                    className={cn(styles['login-form--input'])}
+                    type="text"
+                    id="email"
+                    placeholder="Enter your email address"
+                ></Input>
                 <Button className={styles['submit-button']}>Отправить</Button>
             </form>
         </div>
