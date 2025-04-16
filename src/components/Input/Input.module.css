@@ -1,0 +1,15 @@
+.input {
+    border: 1px solid var(--form-border-color);
+    border-radius: 5px;
+    box-shadow: 15px 20px 45px 0 rgba(233, 233, 233, 0.25);
+    padding: 10px;
+    outline: none;
+    font-family: var(--font);
+    /* color: var(--text-secondary-color); */
+    font-weight: 400;
+    font-size: 17px;
+
+    &:focus {
+        border: 1px solid var(--green);
+    }
+}

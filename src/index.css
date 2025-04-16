@@ -6,6 +6,7 @@
     --white-gray-second-text-color: #acacac;
     --background-color: #fbfbfb;
     --line-color: rgb(197, 230, 197);
+    --form-border-color: #eaeaea;
 }
 
 * {
@@ -18,7 +19,6 @@ body {
     padding: 0;
 }
 
-
 a {
     text-decoration: none;
     color: var(--text-color);
@@ -27,27 +27,25 @@ a {
 /* для слайдера */
 
 .rc-slider-handle {
-    border: 2px solid #46A358;
+    border: 2px solid #46a358;
     background-color: #2b893e;
     border: solid 3px #ffffff;
     height: 15px;
     width: 15px;
+}
 
-  }
-  
 .rc-slider-handle:hover {
-    border-color:  #2b893e;
+    border-color: #2b893e;
 }
 .rc-slider-handle-dragging.rc-slider-handle-dragging.rc-slider-handle-dragging {
-    border-color:  #2b893e;
+    border-color: #2b893e;
     box-shadow: none;
 }
 
-
 .rc-slider-track {
-    background-color: #46A358;
+    background-color: #46a358;
 }
-  
+
 .rc-slider-rail {
     background-color: #9de9ac;
 }
