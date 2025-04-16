@@ -1,0 +1,45 @@
+.account-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+    width: 100%;
+}
+
+.form-module {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: 60%;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+.form-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.password-input--container {
+    position: relative;
+}
+
+.eye {
+    position: absolute;
+    right: 10px;
+    top: 42px;
+}
+
+.file-input {
+    width: 0%;
+    display: none;
+}
+
+.file-input--label {
+    cursor: pointer;
+}

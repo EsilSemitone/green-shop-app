@@ -1,0 +1,28 @@
+.auth-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.auth-header {
+    padding: 2em 0;
+    display: flex;
+    justify-content: center;
+}
+
+.toggle-form--button {
+    border: none;
+    background: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    padding: 0 1em;
+}
+
+.toggle-form--button:nth-child(1) {
+    border-right: 1px solid var(--text-color);
+}
+
+.active-button {
+    color: var(--green);
+}

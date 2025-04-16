@@ -6,7 +6,9 @@ import { Layout } from './layout/Layout/Layout';
 import { Shop } from './pages/Shop/Shop';
 import { Product } from './pages/Product/Product';
 import { Cart } from './pages/Cart/Cart';
-
+import { AccountLayout } from './layout/AccountLayout/AccountLayout';
+import { AccountMe } from './pages/AccountMe/AccountMe';
+import { AccountAddress } from './pages/AccountAddress/AccountAddress';
 
 const router = createBrowserRouter([
     {
@@ -16,7 +18,8 @@ const router = createBrowserRouter([
             {
                 path: '/',
                 element: <Shop></Shop>,
-            },            {
+            },
+            {
                 path: '/product',
                 element: <Navigate to={'/'}></Navigate>,
             },
@@ -40,7 +43,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/account',
-        element: <>account</>,
+        element: <AccountLayout></AccountLayout>,
         children: [
             {
                 path: '/account',
@@ -48,11 +51,11 @@ const router = createBrowserRouter([
             },
             {
                 path: '/account/me',
-                element: <>me</>,
+                element: <AccountMe></AccountMe>,
             },
             {
                 path: '/account/address',
-                element: <>address</>,
+                element: <AccountAddress></AccountAddress>,
             },
             {
                 path: '/account/orders',

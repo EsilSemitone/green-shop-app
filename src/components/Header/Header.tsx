@@ -5,6 +5,7 @@ import cn from 'classnames';
 import { Button } from '../Button/Button';
 import { useState } from 'react';
 import { OrderModal } from '../OrderModal/OrderModal';
+import { AuthModal } from '../AuthModal/AuthModal';
 
 export function Header({ className, ...props }: IHeaderProps) {
     const cartCount = 6;
@@ -40,8 +41,8 @@ export function Header({ className, ...props }: IHeaderProps) {
                     Login
                 </Button>
             </div>
-            <OrderModal isOpen={modalIsOpen} onClose={() => {setModalIsOpen(false)}}>
-            </OrderModal>
+            <AuthModal isOpen={modalIsOpen} onClose={() => {setModalIsOpen(false)}}>
+            </AuthModal>
         </header>
     );
 }
