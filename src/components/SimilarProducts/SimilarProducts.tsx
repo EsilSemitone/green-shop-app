@@ -1,39 +1,64 @@
-import { ISimilarProductsProps } from './SimilarProducts-props';
-import styles from './SimilarProducts.module.css';
-import cn from 'classnames';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import {  Pagination } from 'swiper/modules';
-import "./Swiper.css"
+import './Swiper.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { ProductCard } from '../ProductCard/ProductCard';
-import { useNavigate } from 'react-router';
+import { ISimilarProductsProps } from './SimilarProducts-props';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
+import { ProductCard } from '../cards/ProductCard/ProductCard';
+import { memo, useCallback, useEffect, useState } from 'react';
+import { GetSimilarProductVariantsResponseDto } from 'contracts';
+import { ApiService } from '../../helpers/api.service';
+import styles from './SimilarProducts.module.css';
+import cn from 'classnames';
 
+export const SimilarProducts = memo(({ className, tags, ...props }: ISimilarProductsProps) => {
+    const [similarProducts, setSimilarProducts] = useState<GetSimilarProductVariantsResponseDto>();
 
-export function SimilarProducts({ className, similarProducts, ...props }: ISimilarProductsProps) {
+    const provideSimilarProducts = useCallback(async () => {
+        const data = await ApiService.getSimilarProductVariants(tags);
+        setSimilarProducts(data);
+    }, [tags]);
 
-    const navigate = useNavigate()
-    
+    useEffect(() => {
+        provideSimilarProducts();
+    }, [provideSimilarProducts]);
+
     return (
-        <Swiper
-        className={cn(styles['swiper'], className)}
-        style={{padding: "0 0 3em 0"}}
-        modules={[Pagination]}
-        spaceBetween={10}
-        slidesPerView={5}
-        pagination={{ clickable: true }}
-        breakpoints={{
-        1024: { slidesPerView: 5 },
-        768: { slidesPerView: 4 },
-        480: { slidesPerView: 2 },
-        0: { slidesPerView: 1 },
-        }}
-    >
-        {similarProducts.map(p  => (
-        <SwiperSlide key={p.uuid}>
-            <ProductCard onClick={() => navigate(`/product/${p.uuid}`)} key={p.uuid} title={p.title} price={p.price} image={p.image}></ProductCard>
-        </SwiperSlide>
-        ))}
-    </Swiper>
+        <>
+            {!similarProducts && <div></div>}
+            {similarProducts && (
+                <div {...props} className={styles.similar_products}>
+                    <div className={styles.similar_products__title}>Похожие продукты</div>
+                    <Swiper
+                        className={cn('swiper', className)}
+                        // style={{ padding: '0 0 3em 0' }}
+                        modules={[Pagination]}
+                        spaceBetween={10}
+                        // slidesPerView={5}
+                        pagination={{ clickable: true }}
+                        breakpoints={{
+                            1500: { slidesPerView: 5, spaceBetween: 2 },
+                            1480: { slidesPerView: 4 },
+                            800: { slidesPerView: 3 },
+                            500: { slidesPerView: 2 },
+                            400: { slidesPerView: 1 },
+                        }}
+                    >
+                        {similarProducts.map((p) => (
+                            <SwiperSlide key={p.product_variant_id}>
+                                <ProductCard
+                                    uuid={p.uuid}
+                                    product_variant_id={p.product_variant_id}
+                                    key={p.product_variant_id}
+                                    title={p.name}
+                                    price={Number(p.price)}
+                                    image={p.image}
+                                ></ProductCard>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                </div>
+            )}
+        </>
     );
-}
+});

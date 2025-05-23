@@ -1,24 +1,25 @@
-.blog-block {
+.blog_block {
     display: flex;
     flex-direction: column;
-    gap: 1em;
+    gap: 1rem;
     align-items: center;
 }
 
 .title {
     font-weight: 700;
-    font-size: 2em;
+    font-size: 2rem;
 }
 
-.short-description {
-    font-size: 1em;
+.short_description {
+    font-size: 1rem;
     color: var(--second-text-color);
 }
 
-.posts-container {
-    padding-top: 1em;
+.posts_container {
+    padding-top: 1rem;
     width: 100%;
     display: flex;
     justify-content: center;
-    gap: 4em;
+    flex-wrap: wrap;
+    gap: 4rem;
 }

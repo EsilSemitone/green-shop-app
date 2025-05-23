@@ -1,90 +1,51 @@
-import { Button } from '../../components/Button/Button';
-import { Input } from '../../components/Input/Input';
+import { ChangeEvent } from 'react';
+import { UpdateAccountForm } from '../../components/form/UpdateAccountForm/UpdateAccountForm';
 import styles from './AccountMe.module.css';
 import cn from 'classnames';
-import { FormEvent, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
+import { updateUser } from '../../store/user-slice/async-actions/update-user';
+import { ApiService } from '../../helpers/api.service';
 
 export function AccountMe() {
-    const [isHidePassword, setIsHidePassword] = useState(true);
+    const dispatch = useDispatch<AppDispatch>();
+    const profile = useSelector((s: RootState) => s.user.profile);
 
-    const submit = async (e: FormEvent) => {
-        console.log(e);
-    };
+    const photoChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) {
+            return;
+        }
 
-    const togglePasswordInput = () => {
-        setIsHidePassword((isHide) => !isHide);
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('path', `users/${profile?.uuid}/photo`);
+
+        const updatePhoto = async (formData: FormData) => {
+            try {
+                const { file: photo_image } = await ApiService.upload(formData);
+                dispatch(updateUser({ photo_image }));
+            } catch {
+                console.log('Не удалось загрузить изображение');
+            }
+        };
+        updatePhoto(formData);
     };
 
     return (
-        <div className={cn(styles['account-me--container'])}>
-            <form className={cn(styles['account-form'])} onSubmit={submit}>
-                <div className={styles['form-module']}>
-                    <div className={styles['title']}>Photo</div>
-                    <label className={styles['file-input--label']} htmlFor="file">
-                        <img src="/photo.png" alt="Фото профиля" />
-                    </label>
-                    <input className={styles['file-input']} type="file" id="file" />
-                </div>
-                <div className={styles['form-module']}>
-                    <div className={styles['title']}>Personal Information</div>
-                    <div className={styles['form-item']}>
-                        <label className={styles['form-item--title']} htmlFor="email">
-                            Email address
-                        </label>
-                        <Input
-                            className={cn(styles['login-form--input'])}
-                            type="email"
-                            id="email"
-                            placeholder="Enter your email address"
-                        ></Input>
-                    </div>
-                </div>
-                <div className={styles['form-module']}>
-                    <div className={styles['title']}>Password change</div>
-                    <div className={styles['form-item']}>
-                        <label className={styles['form-item--title']} htmlFor="old-password">
-                            Current password
-                        </label>
-                        <Input
-                            className={cn(styles['login-form--input'])}
-                            type="password"
-                            id="old-password"
-                            placeholder="Password"
-                        ></Input>
-                    </div>
-                    <div className={styles['form-item']}>
-                        <label className={styles['form-item--title']} htmlFor="new-password">
-                            New password
-                        </label>
-                        <Input
-                            className={cn(styles['login-form--input'])}
-                            type="password"
-                            id="new-password"
-                            placeholder="Password"
-                        ></Input>
-                    </div>
-                    <div className={cn(styles['password-input--container'], styles['form-item'])}>
-                        <label htmlFor="repeat-new-password">
-                            Confirm new password
-                            <img
-                                className={styles['eye']}
-                                onClick={() => {
-                                    togglePasswordInput();
-                                }}
-                                src={isHidePassword ? '/icons/close-eye-icon.svg' : '/icons/open-eye-icon.svg'}
-                                alt="Иконка глаза"
-                            />
-                        </label>
-                        <Input
-                            className={cn(styles['login-form--input'])}
-                            type="password"
-                            id="repeat-new-password"
-                            placeholder="Password"
-                        ></Input>
-                    </div>
-                </div>
-                <Button className={styles['submit-button']}>Save Change</Button>
-            </form>
+        <div className={cn(styles.account_me__container)}>
+            <div className={styles.photo_block}>
+                <div className={styles.title}>Фото</div>
+                <label className={styles.file_input__label} htmlFor="photo_image">
+                    <img src={profile?.photo_image ?? '/photo.png'} alt="Фото профиля" />
+                </label>
+                <input onChange={photoChangeHandler} className={styles.file_input} type="file" id="photo_image" />
+            </div>
+            <UpdateAccountForm
+                name={profile?.name ?? ''}
+                email={profile?.email ?? ''}
+                phone_number={profile?.phone_number ?? ''}
+            ></UpdateAccountForm>
         </div>
     );
 }

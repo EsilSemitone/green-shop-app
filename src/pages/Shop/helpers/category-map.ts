@@ -1,13 +1,24 @@
-import { PRODUCT_CATEGORY } from "contracts/enums/product-category.ts";
+import { PRODUCT_CATEGORY, PRODUCT_CATEGORY_ENUM } from 'contracts/enums/product-category.ts';
 
 export const categoryMap = new Map<string, PRODUCT_CATEGORY>([
-    ["House Plants", PRODUCT_CATEGORY.HOUSE_PLANTS],
-    ["Potter Plants", PRODUCT_CATEGORY.POTTER_PLANTS],
-    ["Seeds", PRODUCT_CATEGORY.SEEDS],
-    ["Small Plants", PRODUCT_CATEGORY.SMALL_PLANTS],
-    ["Big Plants", PRODUCT_CATEGORY.BIG_PLANTS],
-    ["Succulents", PRODUCT_CATEGORY.SUCCULENTS],
-    ["Trerrariums", PRODUCT_CATEGORY.TRERRARIUMS],
-    ["Gardening", PRODUCT_CATEGORY.GARDENING],
-    ["Accessories", PRODUCT_CATEGORY.ACCESSORIES],
-])
+    ['Домашние растения', PRODUCT_CATEGORY_ENUM.HOUSE_PLANTS],
+    ['Поттер Растения', PRODUCT_CATEGORY_ENUM.POTTER_PLANTS],
+    ['Семена', PRODUCT_CATEGORY_ENUM.SEEDS],
+    ['Небольшие растения', PRODUCT_CATEGORY_ENUM.SMALL_PLANTS],
+    ['Большие растения', PRODUCT_CATEGORY_ENUM.BIG_PLANTS],
+    ['Суккуленты', PRODUCT_CATEGORY_ENUM.SUCCULENTS],
+    ['Террариумы', PRODUCT_CATEGORY_ENUM.TRERRARIUMS],
+    ['Садоводство', PRODUCT_CATEGORY_ENUM.GARDENING],
+    ['Аксессуары', PRODUCT_CATEGORY_ENUM.ACCESSORIES],
+]);
+
+export const categoryInvertMap = new Map<PRODUCT_CATEGORY | undefined, string>([
+    [PRODUCT_CATEGORY_ENUM.HOUSE_PLANTS, 'Домашние растения'],
+    [PRODUCT_CATEGORY_ENUM.POTTER_PLANTS, 'Поттер Растения'],
+    [PRODUCT_CATEGORY_ENUM.SMALL_PLANTS, 'Небольшие растения'],
+    [PRODUCT_CATEGORY_ENUM.BIG_PLANTS, 'Большие растения'],
+    [PRODUCT_CATEGORY_ENUM.SUCCULENTS, 'Суккуленты'],
+    [PRODUCT_CATEGORY_ENUM.TRERRARIUMS, 'Террариумы'],
+    [PRODUCT_CATEGORY_ENUM.GARDENING, 'Садоводство'],
+    [PRODUCT_CATEGORY_ENUM.ACCESSORIES, 'Аксессуары'],
+]);

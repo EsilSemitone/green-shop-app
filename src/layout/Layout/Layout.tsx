@@ -1,15 +1,15 @@
 import { Outlet } from 'react-router';
 import styles from './Layout.module.css';
-import cn from 'classnames';
 import { Header } from '../../components/Header/Header';
 import { Footer } from '../../components/Footer/Footer';
 
 export function Layout() {
-
     return (
-        <div className={cn(styles['layout'])}>
+        <div className={styles.layout}>
             <Header></Header>
-            <Outlet></Outlet>
+            <main>
+                <Outlet></Outlet>
+            </main>
             <Footer></Footer>
         </div>
     );

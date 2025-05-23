@@ -1,157 +1,173 @@
-
-import { SIZE } from 'contracts/enums/size.ts';
 import styles from './Product.module.css';
 import cn from 'classnames';
-import { useState } from 'react';
-import { NavigateButton } from '../../components/NavigateButton/NavigateButton';
+import { useCallback, useEffect, useState } from 'react';
+import { NavigateButton } from '../../components/button/NavigateButton/NavigateButton';
 import { sizeMap } from './helpers/size-map';
-import { Button } from '../../components/Button/Button';
 import { SimilarProducts } from '../../components/SimilarProducts/SimilarProducts';
-import { CartButton } from '../../components/CartButton/CartButton';
+import { CartButton } from '../../components/button/CartButton/CartButton';
+import { GetProductVariantsByProductResponseDto } from 'contracts';
+import { ApiService } from '../../helpers/api.service';
+import { useParams } from 'react-router';
+import { categoryInvertMap } from '../Shop/helpers/category-map';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store/store';
+import { addToCart as addCartItem } from '../../store/cart-slice/async-actions/add-to-cart';
+import { Rating } from '../../components/Rating/Rating';
 
 export function Product() {
+    const dispatch = useDispatch<AppDispatch>();
+    const { uuid } = useParams();
 
-    const [activeImage, setActiveImage] = useState(0)
+    const [activeImage, setActiveImage] = useState(0);
+    const [productData, setProductData] = useState<GetProductVariantsByProductResponseDto>();
+    const [variantIndex, setVariantIndex] = useState(0);
+    const [countProduct, setCountProduct] = useState(1);
 
-    // const cart = [
-    //     {uuid: "1", count: 1},
-    //     {uuid: "2", count: 2},
-    // ]
+    useEffect(() => {
+        const getProductData = async () => {
+            const data = await ApiService.getProductVariantsByProduct(uuid!);
+            setProductData(data);
+        };
+        getProductData();
+    }, [uuid]);
 
-    const productPage = {
-        product: {
-            uuid: "1",
-            name: "Barberton Daisy",
-            price: 119,
-            images: ["/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png",],
-            shortDescription: "The ceramic cylinder planters come with a wooden stand to help elevate your plants off the ground. The ceramic cylinder planters come with a wooden stand to help elevate your plants off the ground. ",
-            description: `The ceramic cylinder planters come with a wooden stand to help elevate your plants off the ground. The ceramic cylinder planters come with a wooden stand to help elevate your plants off the ground. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla augue nec est tristique auctor. Donec non est at libero vulputate rutrum. Morbi ornare lectus quis justo gravida semper. Nulla tellus mi, vulputate adipiscing cursus eu, suscipit id nulla.
-
-Pellentesque aliquet, sem eget laoreet ultrices, ipsum metus feugiat sem, quis fermentum turpis eros eget velit. Donec ac tempus ante. Fusce ultricies massa massa. Fusce aliquam, purus eget sagittis vulputate, sapien libero hendrerit est, sed commodo augue nisi non neque. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempor, lorem et placerat vestibulum, metus nisi posuere nisl, in accumsan elit odio quis mi. Cras neque metus, consequat et blandit et, luctus a nunc. Etiam gravida vehicula tellus, in imperdiet ligula euismod eget. The ceramic cylinder planters come with a wooden stand to help elevate your plants off the ground. `,
-            size: SIZE.SMALL,
-            categories: ["Potter Plants"],
-            rating: 4.11,
-            tags: ["Home", "Garden", "Plants"]
-        },
-        sizes: [SIZE.SMALL, SIZE.MEDIUM, SIZE.LARGE],
-        review: [
-            {
-                user: {
-                    uuid: "123124",
-                    name: "Alex"
-                },
-                review: {
-                    title: "Все хорошо",
-                    description: "Мне понравилось очень круто вообще",
-                    rating: 4,
-                    createdAt: "2025-04-13T05:23:36.129Z"
-                }
-            },
-        ]
-
-    }
-
-    const similarProducts = [
-        {uuid: "1" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
-        {uuid: "2" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
-        {uuid: "3" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
-        {uuid: "4" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
-        {uuid: "5" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
-        {uuid: "6" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
-        {uuid: "7" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
-        {uuid: "8" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
-    ] 
-
-    const getStarsRating = () => {
-        const res = []
-        const stars = Math.floor(productPage.product.rating)
-
-        for (let i = 1; i < 6; i++) {
-            if (i <= stars) {
-                res.push(<img key={i} src="/icons/star-icon.svg" alt="Иконка звезды"/>)
-            } else {
-                res.push(<img key={i} src="/icons/star-gray-icon.svg" alt="Серая конка звезды"/>)
-            }
+    const addToCart = useCallback(() => {
+        if (!productData) {
+            return;
         }
-        return res
-    }
+        dispatch(
+            addCartItem({
+                product_variant_id: productData.variants[variantIndex].uuid,
+                quantity: countProduct,
+            }),
+        );
+        setCountProduct(1);
+    }, [countProduct, dispatch, productData, variantIndex]);
+
+    const setActiveImageFn = useCallback((index: number) => {
+        return () => setActiveImage(index);
+    }, []);
+
+    const setVariantIndexFn = useCallback((index: number) => {
+        return () => {
+            setVariantIndex(index);
+        };
+    }, []);
+
+    const decrementCountProduct = useCallback(() => {
+        setCountProduct((prev) => (prev > 1 ? prev - 1 : prev));
+    }, []);
+
+    const incrementCountProduct = useCallback(() => {
+        setCountProduct((prev) => prev + 1);
+    }, []);
 
     return (
-    <div className={cn(styles['product-container'])}>
-        <div className={styles['product-top']}>
-            <div className={styles['product-top--images']}>
-                <div className={styles['small-images--container']}>
-                    <div className={styles['small-images--list']}>
-                        {productPage.product.images.map((image, index) => {
-                            return <div key={image + index} onClick={() => {
-                                setActiveImage(index)
-                            }} className={cn(styles['small-image'], 
-                                {[styles["active-small-image"]]: activeImage === index})}>
-                                    <img src={image} alt="Изображение продукта" />
+        <>
+            {!productData && <div>Загрузка...</div>}
+            {productData && (
+                <div className={cn(styles.product_container)}>
+                    <div className={styles.product_top}>
+                        <div className={styles.product_top__images}>
+                            <div className={styles.small_images__container}>
+                                <div className={styles.small_images__list}>
+                                    {productData.images.map((image, index) => {
+                                        return (
+                                            <div
+                                                key={image}
+                                                onClick={setActiveImageFn(index)}
+                                                className={cn(styles.small_image, {
+                                                    [styles.active_small_image]: activeImage === index,
+                                                })}
+                                            >
+                                                <img src={image} alt="Изображение продукта" />
+                                            </div>
+                                        );
+                                    })}
                                 </div>
-                        })}        
-                    </div>
-                </div>
-                <div className={styles['big-image']}>
-                    <img src={productPage.product.images[activeImage]} alt="Большое изображение продукта" />
-                </div>
-            </div>
-            <div className={styles['product-detail']}>
-                <div className={styles['product-detail--header']}>
-                    <h2>{productPage.product.name}</h2>
-                    <div className={styles['price-and-rating']}>
-                        <div className={styles['price']}>{`$${productPage.product.price}`}</div>
-                        <div className={styles['rating-block']}>
-                            <div className={styles['rating-starts']}>
-                                {getStarsRating()}
                             </div>
-                            <div className={styles['count-reviews']}>{`${productPage.review.length} Customer Review`}</div>
+                            <div className={styles.big_image}>
+                                <img
+                                    src={productData.images[activeImage] || '/image-not-found.png'}
+                                    alt="Большое изображение продукта"
+                                />
+                            </div>
+                        </div>
+                        <div className={styles.product_detail}>
+                            <div className={styles.product_detail__header}>
+                                <h2>{productData?.name}</h2>
+                                <div className={styles.price_and_rating}>
+                                    <div className={styles.price}>{`${productData.variants[variantIndex].price} ₽`}</div>
+                                    <div className={styles.rating_block}>
+                                        <Rating rating={productData?.variants[variantIndex].rating}></Rating>
+                                        <div className={styles.count_reviews}>{`${1} Отзывов`}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={styles.product_detail__description}>
+                                <div className={styles.product_detail_description__title}>Краткое описание:</div>
+                                <div className={styles.product_detail_description__description}>
+                                    {productData?.short_description}
+                                </div>
+                            </div>
+                            <div className={styles.product_detail__size}>
+                                <div className={styles.product_detail__description}>Размер:</div>
+                                <div className={styles.size_buttons}>
+                                    {productData.variants.map(({ size }, index) => {
+                                        return (
+                                            <NavigateButton
+                                                onClick={setVariantIndexFn(index)}
+                                                className={cn(styles.size_button, {
+                                                    [styles.active_size_button]: index === variantIndex,
+                                                })}
+                                                key={size}
+                                            >
+                                                {sizeMap.get(size)}
+                                            </NavigateButton>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                            <div className={styles.product_detail__interaction}>
+                                <div className={styles.count_buttons}>
+                                    <CartButton onClick={decrementCountProduct}>{'-'}</CartButton>
+                                    <span>{countProduct}</span>
+                                    <CartButton onClick={incrementCountProduct}>{'+'}</CartButton>
+                                </div>
+                                <div className={styles.other_buttons}>
+                                    <NavigateButton onClick={addToCart} className={styles.invert_button}>
+                                        Добавить в корзину
+                                    </NavigateButton>
+                                    <NavigateButton className={styles.heart_button}>
+                                        <img src="/icons/heart-icon-green.svg" alt="Иконка сердца" />
+                                    </NavigateButton>
+                                </div>
+                            </div>
+                            <div className={styles.product_detail__footer}>
+                                <div>
+                                    Категория: <span>{categoryInvertMap.get(productData?.category)}</span>
+                                </div>
+                                <div>
+                                    Tags: <span>{productData?.variants[variantIndex].tags.join(', ')}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className={styles['product-detail--description']}>
-                    <div className={styles['product-detail--description__title']}>Short Description:</div>
-                    <div className={styles['product-detail--description__description']}>{productPage.product.shortDescription}</div>
-                </div>
-                <div className={styles['product-detail--size']}>
-                    <div className={styles['product-detail--description']}>Size:</div>
-                    <div className={styles['size-buttons']}>
-                        {productPage.sizes.map(size => {
-                            return <NavigateButton className={cn(styles["size-button"], {[styles["active-size-button"]]: size === productPage.product.size})} key={size}>{sizeMap.get(size)}</NavigateButton>
-                        })}
+                    <div className={styles.product_bottom}>
+                        <div className={styles.product_bottom__navigate}>
+                            <div className={styles.product_bottom__navigate_item}>Описание продукта</div>
+                        </div>
+                        <p>{productData?.description}</p>
                     </div>
-                </div>
-                <div className={styles['product-detail--interaction']}>
-                    <div className={styles['count-buttons']}>
-                        <CartButton>{"-"}</CartButton>
-                        <span>{1}</span>
-                        <CartButton>{"+"}</CartButton>
-                    </div>
-                    <div className={styles['other-buttons']}>
-                        <Button>Buy NOW</Button>
-                        <Button className={styles['invert-button']}>Add to cart</Button>
-                        <NavigateButton className={styles['heart-button']}>
-                            <img src="/icons/heart-icon-green.svg" alt="Иконка сердца" />
-                        </NavigateButton>
-                    </div>
-                </div>
-                <div className={styles['product-detail--footer']}>
-                    <div>Categories: <span>{productPage.product.categories}</span></div>
-                    <div>Tags: <span>{productPage.product.tags.join(', ')}</span></div>
-                </div>
-            </div>
-        </div>
-        <div className={styles['product-bottom']}>
-            <div className={styles['product-bottom--navigate']}>
-                <div className={styles['product-bottom--navigate-item']}>Product Description</div>
-            </div>
-            <p>{productPage.product.description}</p>
-        </div>
 
-        <div className={styles["similar-products"]}>
-            <div className={styles['similar-products--title']}>Releted Products</div>
-            <SimilarProducts  className={styles["swiper"]} similarProducts={similarProducts}></SimilarProducts>
-        </div>
-    </div>
+                    <div className={styles.similar_products}>
+                        <SimilarProducts
+                            className={styles.swiper}
+                            tags={productData?.variants.map((v) => v.tags_id).flat(1)}
+                        ></SimilarProducts>
+                    </div>
+                </div>
+            )}
+        </>
     );
 }

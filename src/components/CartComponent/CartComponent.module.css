@@ -2,50 +2,38 @@
     /* width: 60%; */
 }
 
-.cart-header {
+.cart_header {
     display: flex;
     justify-content: space-between;
-    /* gap: 11em; */
-    border-bottom: 1px solid rgb(197, 230, 197);
-    padding: 1em 0
+    border-bottom: 1px solid var(--line-color);
+    padding: 1rem 0;
+    gap: 1rem;
 }
 
-
-.cart-header--item{
+.cart_header__item {
     display: flex;
-    /* justify-content: center; */
+    justify-content: center;
     flex: 1;
-    font-size: 1em;
+    font-size: 1rem;
     font-weight: 600;
+
+    /* width: 8rem; */
 }
 
-.cart-header--item:first-child {
-    flex: 2;
-    justify-content: left;
-}
-
-.cart-header--item:first-child {
-    flex: 2;
+.cart_header__item:first-child {
+    flex: 2.8;
     justify-content: center;
 }
 
-/* .cart-header--item:nth-child(2) {
-    padding-right: 6%;
-} */
-
-.cart-container {
+.cart_container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 2em 0;
+    gap: 1rem;
+    padding: 2rem 0;
     height: 50vh;
-    overflow-y:scroll;
+    overflow-y: scroll;
 }
 
-.cart-container::-webkit-scrollbar {
+.cart_container::-webkit-scrollbar {
     width: 6px;
-}
-.cart-container::-webkit-scrollbar-thumb {
-    background-color: #f0efef;
-    border-radius: 3px;
 }

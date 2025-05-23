@@ -5,5 +5,5 @@ export interface IFilterItemEvent extends MouseEvent {
 }
 
 export interface ICategoryEventTarget extends EventTarget {
-    textContent?: string
+    id?: string
 }

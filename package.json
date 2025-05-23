@@ -10,14 +10,22 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.6.1",
+    "@hookform/resolvers": "^5.0.1",
+    "@reduxjs/toolkit": "^2.7.0",
+    "@types/node": "^22.14.1",
+    "antd": "^5.25.1",
     "axios": "^1.8.4",
     "classnames": "^2.5.1",
     "contracts": "file:../contracts",
-    "rc-slider": "^11.1.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.56.1",
+    "react-redux": "^9.2.0",
     "react-router": "^7.5.0",
-    "swiper": "^11.2.6"
+    "swiper": "^11.2.6",
+    "use-debounce": "^10.0.4",
+    "zod": "^3.24.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

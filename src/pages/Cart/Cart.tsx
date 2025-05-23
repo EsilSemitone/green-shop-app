@@ -1,185 +1,176 @@
+import styles from './Cart.module.css';
 import { Link } from 'react-router';
-import { Button } from '../../components/Button/Button';
+import { Button } from '../../components/common/Button/Button';
 import { CartComponent } from '../../components/CartComponent/CartComponent';
 import { SimilarProducts } from '../../components/SimilarProducts/SimilarProducts';
-import styles from './Cart.module.css';
-import cn from 'classnames';
-import { MouseEvent, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PAYMENT_METHOD } from 'contracts/enums/payment-method.ts';
-import { OrderModal } from '../../components/OrderModal/OrderModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
+import { getCurrentProducts } from './helpers/getCurrentProducts';
+import { EnrichedCartElement } from './types/enriched-cart-element';
+import { getTotal } from './helpers/get-total';
+import { getAllAddress } from '../../store/address-slice/async-actions/get-all-address';
+import { DELIVERY_PRICE } from './constants/delivery-price';
+import { AuthModal } from '../../components/modal/AuthModal/AuthModal';
+import { OrderModal } from '../../components/modal/OrderModal/OrderModal';
+import { extractTagsFromProducts } from './helpers/extract-tags-from-products';
+import { ROUTES } from '../../common/constants/routes';
+import { RadioChangeEvent } from 'antd';
+import { Radio } from '../../components/Radio/Radio';
 
 export function Cart() {
+    const dispatch = useDispatch<AppDispatch>();
 
-    const getTotal = (products: {
-        uuid: string;
-        name: string;
-        price: number;
-        images: string[];
-        count: number;
-    }[]) => {
-        return products.reduce((acc, value) => {
-            return acc + (value.price * value.count)
-        }, 0)
-    }
+    const cartItems = useSelector((s: RootState) => s.cart.items);
+    const isAuthorized = useSelector((s: RootState) => s.user.jwt);
+    const addresses = useSelector((s: RootState) => s.address.addresses);
 
-    const delivery = 16
+    const [products, setProducts] = useState<EnrichedCartElement[]>([]);
+    const [address, setAddress] = useState<string | null>(null);
+    const [payment, setPayment] = useState<PAYMENT_METHOD>(PAYMENT_METHOD.YOOKASSA);
 
-    const products = [
-        {
-            uuid: "1",
-            name: "Barberton Daisy",
-            price: 119,
-            images: ["/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png",],
-            count: 12,
-        },
-        {
-            uuid: "2",
-            name: "Barberton Daisy",
-            price: 119,
-            images: ["/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png",],
-            count: 12,
-        },
-        {
-            uuid: "3",
-            name: "Barberton Daisy",
-            price: 119,
-            images: ["/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png",],
-            count: 12,
-        },
-        {
-            uuid: "4",
-            name: "Barberton Daisy",
-            price: 119,
-            images: ["/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png",],
-            count: 12,
-        },
-        {
-            uuid: "5",
-            name: "Barberton Daisy",
-            price: 119,
-            images: ["/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png",],
-            count: 12,
-        },
-        {
-            uuid: "6",
-            name: "Barberton Daisy",
-            price: 119,
-            images: ["/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png",],
-            count: 12,
-        },
-        {
-            uuid: "7",
-            name: "Barberton Daisy",
-            price: 119,
-            images: ["/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png",],
-            count: 12,
-        },
-        {
-            uuid: "8",
-            name: "Barberton Daisy",
-            price: 119,
-            images: ["/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png", "/test-image.png", "/test-image2.png",],
-            count: 12,
-        },
-    ]
+    const [orderModalIsOpen, setOrderModalIsOpen] = useState(false);
+    const [authModalIsOpen, setAuthModalIsOpen] = useState(false);
 
-    const similarProducts = [
-        {uuid: "1" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
-        {uuid: "2" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
-        {uuid: "3" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
-        {uuid: "4" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
-        {uuid: "5" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
-        {uuid: "6" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
-        {uuid: "7" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
-        {uuid: "8" ,title: "Beach Spider Lily", price: 234, image: "/test-image.png"},
-    ] 
-    const addressArray = [
-        {uuid: "1", name: "г. Москва ул Московская 2345"},
-        {uuid: "2", name: "г. Питер ул Московская 2345"},
-        {uuid: "3", name: "г. Екатеринбург ул Московская 2345"},
-    ]
+    useEffect(() => {
+        const provideProducts = async () => {
+            const currentProducts = await getCurrentProducts(cartItems);
+            setProducts(currentProducts);
+        };
 
-    interface InputEvent extends MouseEvent {
-        target: InputEventTarget
-    }
+        const provideAddresses = async () => {
+            await dispatch(getAllAddress());
+        };
+        provideAddresses();
+        provideProducts();
+    }, []);
 
-    interface InputEventTarget extends EventTarget {
-        id?: string
-    }
+    useEffect(() => {
+        if (addresses.length > 0) {
+            setAddress(addresses[0].uuid);
+        }
+    }, [addresses]);
 
-    const [address, setAddress] = useState<string | undefined>(addressArray[0].uuid)
-    const [payment, setPayment] = useState<PAYMENT_METHOD>(PAYMENT_METHOD.YOOKASSA)
-    const [modalIsOpen, setModalIsOpen] = useState(false)
+    useEffect(() => {
+        const res: EnrichedCartElement[] = [];
 
+        cartItems.forEach((element) => {
+            const product = products.find((p) => p.product_variant_id === element.product_variant_id);
 
-    const selectAddress = (e: InputEvent) => {
-        setAddress(e.target?.id)
-    }
+            if (product) {
+                res.push({ ...product, quantity: element.quantity });
+            }
+        });
 
-    const selectPayment = (e: InputEvent) => {
-        setPayment(e.target?.id as PAYMENT_METHOD)
-    }
+        setProducts(res);
+    }, [cartItems]);
 
+    const selectAddress = (e: RadioChangeEvent) => {
+        setAddress(e.target.value);
+    };
+
+    const selectPayment = (e: RadioChangeEvent) => {
+        setPayment(e.target.value);
+    };
+
+    const openAuthModal = () => {
+        setAuthModalIsOpen(true);
+    };
+
+    const closeAuthModal = () => {
+        setAuthModalIsOpen(false);
+    };
+
+    const openOrderModal = () => {
+        setOrderModalIsOpen(true);
+    };
+
+    const closeOrderModal = () => {
+        setOrderModalIsOpen(false);
+    };
 
     return (
-    <div className={cn(styles['cart'])}>
-        <div className={cn(styles['cart-container'])}>
-            <CartComponent  className={cn(styles['cart-component'])} products={products}></CartComponent>
-            <div className={styles['total']}>
-                <div className={styles['total-title']}>Cart Totals</div>
-                <div className={styles['total-container']}>
-                    <div className={styles['total-item']}>
-                        <div className={styles['total-item--left']}>Subtotal</div>
-                        <div className={styles['total-item--right']}>{`$${getTotal(products)}`}</div>
+        <div className={styles.cart}>
+            <div className={styles.cart_container}>
+                <CartComponent className={styles.cart_component} products={products}></CartComponent>
+                <div className={styles.total}>
+                    <div className={styles.total_title}>Итого</div>
+                    <div className={styles.total_container}>
+                        <div className={styles.total_item}>
+                            <div className={styles.total_item__left}>Цена</div>
+                            <div className={styles.total_item__right}>{`${getTotal(products)}₽`}</div>
+                        </div>
+                        <div className={styles.total_item}>
+                            <div className={styles.total_item__left}>Доставка</div>
+                            <div className={styles.total_item__right}>{`${DELIVERY_PRICE}₽`}</div>
+                        </div>
+                        <div className={styles.total_result_item}>
+                            <div className={styles.total_result_left_item}>Общая сумма</div>
+                            <div className={styles.total_result_right_item}>{`${getTotal(products) + DELIVERY_PRICE}₽`}</div>
+                        </div>
                     </div>
-                    <div className={styles['total-item']}>
-                        <div className={styles['total-item--left']}>Delivery</div>
-                        <div className={styles['total-item--right']}>{`$${delivery}`}</div>
-                    </div>
-                    <div className={styles['total-result-item']}>
-                        <div className={styles['total-result-left-item']}>Total</div>
-                        <div className={styles['total-result-right-item']}>{`$${getTotal(products) + delivery}`}</div>
-                    </div>
-                </div>
-                <Button onClick={() => {setModalIsOpen(true)}}>Place Order</Button>
-                <div className={styles['select']}>
-                    {addressArray.map((a) => {
-                        return <>
-                            <input onClick={selectAddress} className={styles['radio-input']} type="radio" name="address" id={a.uuid} />
-                            <label className={cn(styles['select-item'], {[styles["active-select-item"]]:  a.uuid === address})} htmlFor={a.uuid}>
-                                <div className={styles['icon-select']}>
-                                    <div className={styles['icon-select--inner']}></div>
-                                </div>
-                                <div className={styles['select-text']}>{a.name}</div>
-                            </label>
+                    {!isAuthorized && (
+                        <p className={styles.warning_info}>
+                            Для оформления заказа необходимо{' '}
+                            <span onClick={openAuthModal} className={styles.link}>
+                                авторизоваться
+                            </span>
+                        </p>
+                    )}
+                    {isAuthorized && (
+                        <>
+                            <Button onClick={openOrderModal}>Сделать заказ</Button>
+                            <div className={styles.select}>
+                                <div>Адрес</div>
+                                {addresses.length === 0 && (
+                                    <div className={styles.select_address__nullable_title}>
+                                        У вас не указан адрес, вы можете сделать это в{' '}
+                                        <Link className={styles.link} to={ROUTES.account.address}>
+                                            личном кабинете.
+                                        </Link>
+                                    </div>
+                                )}
+                                {addresses.length > 0 && (
+                                    <Radio
+                                        name="addressGroup"
+                                        defaultValue={addresses[0].uuid}
+                                        onChange={selectAddress}
+                                        options={addresses.map((a) => {
+                                            return {
+                                                value: a.uuid,
+                                                label: (
+                                                    <div>
+                                                        <b>{a.city}</b>
+                                                        {` ${a.street_address} ${a.phone_number}`}
+                                                    </div>
+                                                ),
+                                            };
+                                        })}
+                                    ></Radio>
+                                )}
+                            </div>
+
+                            <div className={styles.select}>
+                                <div>Метод оплаты</div>
+                                <Radio
+                                    name="paymentGroup"
+                                    defaultValue={PAYMENT_METHOD.YOOKASSA}
+                                    onChange={selectPayment}
+                                    options={[
+                                        { value: PAYMENT_METHOD.YOOKASSA, label: 'Оплата ЮКасса' },
+                                        { value: PAYMENT_METHOD.CASH, label: 'Оплата при получении' },
+                                    ]}
+                                ></Radio>
+                            </div>
                         </>
-                    })}
+                    )}
                 </div>
-                <div className={styles['select']}>
-                    <input onClick={selectPayment} className={styles['radio-input']} type="radio" name="address" id={PAYMENT_METHOD.YOOKASSA} />
-                    <label className={cn(styles['select-item'], {[styles["active-select-item"]]:  payment === PAYMENT_METHOD.YOOKASSA})} htmlFor={PAYMENT_METHOD.YOOKASSA}>
-                        <div className={styles['icon-select']}>
-                            <div className={styles['icon-select--inner']}></div>
-                        </div>
-                        <div className={styles['select-text']}>Оплата ЮКасса</div>
-                    </label>
-                    <input onClick={selectPayment} className={styles['radio-input']} type="radio" name="address" id={PAYMENT_METHOD.CASH} />
-                    <label className={cn(styles['select-item'], {[styles["active-select-item"]]:  payment === PAYMENT_METHOD.CASH})} htmlFor={PAYMENT_METHOD.CASH}>
-                        <div className={styles['icon-select']}>
-                            <div className={styles['icon-select--inner']}></div>
-                        </div>
-                        <div className={styles['select-text']}>Оплата при получении</div>
-                    </label>
-                </div>
-                <div className={styles['select-address--nullable-title']}>У вас не указан адрес, вы можете сделать это в <Link className={styles["link"]} to={'/account/address'}>личном кабинете.</Link></div>
-                <OrderModal isOpen={modalIsOpen} onClose={() => {setModalIsOpen(false)}}>
-                </OrderModal>
             </div>
+            <OrderModal isOpen={orderModalIsOpen} onClose={closeOrderModal}></OrderModal>
+            <AuthModal isOpen={authModalIsOpen} onClose={closeAuthModal}></AuthModal>
+
+            <SimilarProducts className={styles.swiper} tags={extractTagsFromProducts(products)}></SimilarProducts>
         </div>
-        <div className={styles["similar-products"]}>
-            <div className={styles['similar-products--title']}>Releted Products</div>
-            <SimilarProducts  className={styles["swiper"]} similarProducts={similarProducts}></SimilarProducts>
-        </div>
-    </div>
     );
 }

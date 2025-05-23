@@ -1,0 +1,21 @@
+.my-custom-radio-group .ant-radio-inner {
+    border-color: var(--green);
+}
+
+.my-custom-radio-group:hover .ant-radio-inner {
+    border-color: var(--green);
+}
+
+.my-custom-radio-group .ant-radio-checked .ant-radio-inner {
+    background-color: var(--white);
+    border-color: var(--green);
+}
+
+.my-custom-radio-group .ant-radio-inner::after {
+    background-color: var(--green);
+    transform: scale(0.575) !important;
+}
+
+.my-custom-radio-group .ant-radio-wrapper {
+    margin-right: 8px;
+}
