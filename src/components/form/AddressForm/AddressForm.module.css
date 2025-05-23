@@ -1,0 +1,30 @@
+.account_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+    /* width: 50%; */
+}
+
+.form_module {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: 60%;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+.form_item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.error {
+    color: var(--error-color);
+}

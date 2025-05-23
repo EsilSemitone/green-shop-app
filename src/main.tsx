@@ -9,68 +9,81 @@ import { Cart } from './pages/Cart/Cart';
 import { AccountLayout } from './layout/AccountLayout/AccountLayout';
 import { AccountMe } from './pages/AccountMe/AccountMe';
 import { AccountAddress } from './pages/AccountAddress/AccountAddress';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+import { ResetPassword } from './pages/ResetPassword/ResetPassword';
+import { ROUTES } from './common/constants/routes';
+import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
 
 const router = createBrowserRouter([
     {
-        path: '/',
+        path: ROUTES.shop.layout,
         element: <Layout></Layout>,
         children: [
             {
-                path: '/',
+                path: ROUTES.shop.layout,
                 element: <Shop></Shop>,
             },
             {
-                path: '/product',
-                element: <Navigate to={'/'}></Navigate>,
+                path: ROUTES.shop.products,
+                element: <Navigate to={ROUTES.shop.layout}></Navigate>,
             },
             {
-                path: '/product/:id',
+                path: ROUTES.shop.product,
                 element: <Product></Product>,
             },
             {
-                path: '/cart',
+                path: ROUTES.shop.cart,
                 element: <Cart></Cart>,
             },
             {
-                path: '/blog',
+                path: ROUTES.shop.blogs,
                 element: <>blog</>,
             },
             {
-                path: '/blog/:id',
+                path: ROUTES.shop.blog,
                 element: <>blog id</>,
+            },
+            {
+                path: ROUTES.shop.restorePassword,
+                element: <ResetPassword></ResetPassword>,
+            },
+            {
+                path: ROUTES.error,
+                element: <NotFoundPage></NotFoundPage>,
             },
         ],
     },
     {
-        path: '/account',
+        path: ROUTES.account.layout,
         element: <AccountLayout></AccountLayout>,
         children: [
             {
-                path: '/account',
-                element: <Navigate to={'/account/me'}></Navigate>,
+                path: ROUTES.account.layout,
+                element: <Navigate to={ROUTES.account.me}></Navigate>,
             },
             {
-                path: '/account/me',
+                path: ROUTES.account.me,
                 element: <AccountMe></AccountMe>,
             },
             {
-                path: '/account/address',
+                path: ROUTES.account.address,
                 element: <AccountAddress></AccountAddress>,
             },
             {
-                path: '/account/orders',
+                path: ROUTES.account.orders,
                 element: <>orders</>,
             },
             {
-                path: '/account/wishlist',
+                path: ROUTES.account.wishlist,
                 element: <>wishlist</>,
             },
         ],
     },
-    {
-        path: '*',
-        element: <>Error</>,
-    },
 ]);
 
-createRoot(document.getElementById('root')!).render(<RouterProvider router={router}></RouterProvider>);
+createRoot(document.getElementById('root')!).render(
+    <Provider store={store}>
+        <RouterProvider router={router}></RouterProvider>
+    </Provider>,
+);

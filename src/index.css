@@ -2,11 +2,16 @@
     --text-color: #3d3d3d;
     --white: #fff;
     --green: #46a358;
+    --green-hover: #419752;
+    --green-background: rgba(70, 163, 88, 0.1);
     --second-text-color: #727272;
     --white-gray-second-text-color: #acacac;
     --background-color: #fbfbfb;
+    --background-product-cart-color: rgb(236, 236, 236);
     --line-color: rgb(197, 230, 197);
     --form-border-color: #eaeaea;
+    --error-color: #ff5656;
+    --background-modal: rgba(0, 0, 0, 0.55);
 }
 
 * {
@@ -17,6 +22,16 @@ body {
     font-family: 'PT Sans', sans-serif;
     margin: 0;
     padding: 0;
+
+    font-size: 15px;
+
+    @media (max-width: 1000px) {
+        font-size: 13px;
+    }
+
+    @media (max-width: 450px) {
+        font-size: 12px;
+    }
 }
 
 a {
@@ -24,34 +39,36 @@ a {
     color: var(--text-color);
 }
 
-/* для слайдера */
-
-.rc-slider-handle {
-    border: 2px solid #46a358;
-    background-color: #2b893e;
-    border: solid 3px #ffffff;
-    height: 15px;
-    width: 15px;
+.green_badge .ant-badge-count {
+    background-color: var(--green);
 }
 
-.rc-slider-handle:hover {
-    border-color: #2b893e;
-}
-.rc-slider-handle-dragging.rc-slider-handle-dragging.rc-slider-handle-dragging {
-    border-color: #2b893e;
-    box-shadow: none;
+.green_badge:hover .ant-badge-count {
+    background-color: var(--green-hover) !important;
 }
 
-.rc-slider-track {
-    background-color: #46a358;
+.green_badge .ant-badge-count:hover {
+    background-color: var(--green-hover) !important;
 }
 
-.rc-slider-rail {
-    background-color: #9de9ac;
+.green_slider .ant-slider-track {
+    background-color: var(--green) !important;
 }
 
-/* @media screen and (max-width: 1200px)  {
-    body {
-        font-size: 12px;
+.green_slider {
+    &.ant-slider-track {
+        background-color: var(--green) !important;
     }
-} */
+}
+
+.green_slider .ant-slider-handle::after {
+    box-shadow: 0 0 0 2px var(--green-hover);
+    background-color: #ffffff;
+}
+
+.green_slider .ant-slider-handle::after {
+    box-shadow: 0 0 0 2px var(--green-hover) !important;
+}
+.green_slider:focus .ant-slider-handle::before {
+    box-shadow: 0 0 0 2px var(--green-hover) !important;
+}

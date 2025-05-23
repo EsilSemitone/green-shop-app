@@ -1,0 +1,19 @@
+.address_cart {
+    width: 100%;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.address_cart__delete_button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+
+    &:hover {
+        background-color: var(--background-color);
+    }
+}

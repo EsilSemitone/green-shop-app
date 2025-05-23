@@ -1,6 +1,20 @@
 .layout {
     display: flex;
     flex-direction: column;
-    padding: 1em 7em;
-    gap: 2em;
+    padding: 1rem 7rem;
+    gap: 2rem;
+}
+
+@media (max-width: 1000px) {
+    .layout {
+        padding: 1rem 2rem;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 450px) {
+    .layout {
+        padding: 1rem 1rem;
+        gap: 1rem;
+    }
 }

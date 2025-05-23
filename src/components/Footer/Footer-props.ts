@@ -1,3 +1,3 @@
 import { BaseHTMLAttributes } from 'react';
 
-export type IHeaderProps = BaseHTMLAttributes<HTMLElement>;
+export type IFooterProps = BaseHTMLAttributes<HTMLElement>;

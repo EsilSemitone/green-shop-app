@@ -1,0 +1,36 @@
+.search_input {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    border: none;
+}
+
+.search_img {
+    position: absolute;
+    width: 1.5em;
+    right: 0.5em;
+    top: 25%;
+}
+
+.search_input__input {
+    padding: 1em 4em 1em 1em;
+    transition: 0.5s;
+    border-radius: 1em;
+    outline: none;
+}
+
+.open input {
+    width: 10em;
+    border: 1px solid #eaeaea;
+}
+
+.hide input {
+    border: 1px solid var(--white);
+    width: 0px;
+}
+
+.hide:hover input,
+.hide input:focus {
+    width: 10em;
+    border: 1px solid #eaeaea;
+}

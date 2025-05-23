@@ -1,0 +1,23 @@
+.button {
+    border-radius: 5px;
+    background-color: var(--white);
+    border: 1px solid var(--green);
+    color: var(--text-color);
+    font-size: 1.2em;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.3rem 0.7rem;
+
+    display: flex;
+    justify-content: center;
+    gap: 0.3em;
+}
+
+.active {
+    background-color: var(--green);
+    color: var(--white);
+}
+
+.active:hover {
+    background-color: #429a54 !important;
+}
