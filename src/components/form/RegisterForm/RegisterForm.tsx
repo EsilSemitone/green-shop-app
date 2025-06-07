@@ -14,6 +14,8 @@ import { syncCart } from '../../../store/cart-slice/async-actions/sync-cart';
 import { removeItem } from '../../../store/localstorage/localstorage';
 import { LOCALSTORAGE_KEYS } from '../../../store/localstorage/localstorage-keys';
 import { PasswordInput } from '../../input/PasswordInput/PasswordInput';
+import { getAllFavorites } from '../../../store/favorites/async-actions/get-all-favorites';
+import { getProfile } from '../../../store/user-slice/async-actions/get-profile';
 
 export function RegisterForm({ className, onClose, ...props }: IRegisterFormProps) {
     const dispatch = useDispatch<AppDispatch>();
@@ -35,6 +37,8 @@ export function RegisterForm({ className, onClose, ...props }: IRegisterFormProp
         if (registerUser.fulfilled.match(action)) {
             dispatch(syncCart(cartItems));
             removeItem(LOCALSTORAGE_KEYS.GUEST_CART);
+            dispatch(getProfile());
+            dispatch(getAllFavorites());
             if (onClose) {
                 onClose();
             }

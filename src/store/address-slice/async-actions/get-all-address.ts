@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ApiService } from '../../../helpers/api.service';
+import { ApiService } from '../../../common/helpers/api.service';
 import { AxiosError } from 'axios';
 
 export const getAllAddress = createAsyncThunk('address/get-all', async () => {

@@ -23,7 +23,7 @@
     display: flex;
     gap: 2rem;
 
-    @media (max-width: 650px) {
+    @media (max-width: 850px) {
         flex-direction: column;
     }
 }
@@ -33,6 +33,10 @@
     flex-direction: column;
     width: 25rem;
     background-color: var(--background-color);
+
+    @media (max-width: 850px) {
+        width: 100%;
+    }
 }
 
 .content_navigate__header {
@@ -47,10 +51,6 @@
     gap: 0.5rem;
     border-bottom: 1px solid var(--line-color);
     padding-bottom: 1rem;
-
-    @media (max-width: 450px) {
-        flex-direction: row;
-    }
 }
 
 .content_navigate__item {
@@ -67,7 +67,12 @@
 }
 
 .content_navigate__footer {
-    padding: 1rem 0;
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
 .logout_text {
@@ -77,4 +82,9 @@
 
 .outlet {
     width: 100%;
+}
+
+.icon {
+    height: 17px;
+    width: 17px;
 }

@@ -146,6 +146,8 @@
     display: flex;
     gap: 3em;
     flex-wrap: wrap;
+    height: 80%;
+    padding-bottom: 7rem;
 
     @media (max-width: 1580px) {
         overflow-y: scroll;

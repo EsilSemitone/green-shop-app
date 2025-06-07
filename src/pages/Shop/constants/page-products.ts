@@ -1,1 +1,1 @@
-export const PAGE_PRODUCTS = 12;
+export const PAGE_PRODUCTS = 10;

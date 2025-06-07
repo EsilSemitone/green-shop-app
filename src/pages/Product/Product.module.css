@@ -129,7 +129,7 @@
 }
 
 .size_button {
-    border-radius: 50%;
+    border-radius: 50% !important;
     border: 1px solid var(--second-text-color);
     height: 2em;
     width: 2em;
@@ -145,7 +145,7 @@
 }
 
 .active_size_button {
-    color: var(--green);
+    color: var(--green) !important;
     border: 1px solid var(--green);
 }
 
@@ -231,4 +231,24 @@
 
 .similar_products {
     padding: 0 3rem;
+}
+
+.review_container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.review_button {
+    background: none;
+    border: none;
+    width: 5rem;
+    cursor: pointer;
+    color: var(--green);
+    font-weight: 600;
+    margin: 0 auto;
+}
+
+.review_select {
+    width: 10rem !important;
 }

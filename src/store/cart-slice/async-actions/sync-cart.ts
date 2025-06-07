@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ApiService } from '../../../helpers/api.service';
+import { ApiService } from '../../../common/helpers/api.service';
 import { ICartItems } from '../interfaces/cart-item';
 import { AxiosError } from 'axios';
 

@@ -1,4 +1,6 @@
 export const LOCALSTORAGE_KEYS = {
     JWT: 'JWT',
     GUEST_CART: 'GUEST_CART',
+    FAVORITES: 'FAVORITES',
+    PROFILE: 'PROFILE',
 };

@@ -1,51 +1,65 @@
 import styles from './Product.module.css';
 import cn from 'classnames';
-import { useCallback, useEffect, useState } from 'react';
+import { MouseEvent, useCallback, useState } from 'react';
 import { NavigateButton } from '../../components/button/NavigateButton/NavigateButton';
 import { sizeMap } from './helpers/size-map';
 import { SimilarProducts } from '../../components/SimilarProducts/SimilarProducts';
 import { CartButton } from '../../components/button/CartButton/CartButton';
-import { GetProductVariantsByProductResponseDto } from 'contracts';
-import { ApiService } from '../../helpers/api.service';
 import { useParams } from 'react-router';
 import { categoryInvertMap } from '../Shop/helpers/category-map';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
 import { addToCart as addCartItem } from '../../store/cart-slice/async-actions/add-to-cart';
 import { Rating } from '../../components/Rating/Rating';
+import { isOnFavorites } from '../../common/helpers/is-on-favorites';
+import { removeToFavorites } from '../../store/favorites/async-actions/remove-to-favorites';
+import { addToFavorites } from '../../store/favorites/async-actions/add-to-favorites';
+import { useProduct } from '../../common/hooks/use-product';
+import { ProductReviews } from '../../components/ProductReviews/ProductReviews';
+import { Tabs } from 'antd';
 
 export function Product() {
     const dispatch = useDispatch<AppDispatch>();
-    const { uuid } = useParams();
 
-    const [activeImage, setActiveImage] = useState(0);
-    const [productData, setProductData] = useState<GetProductVariantsByProductResponseDto>();
-    const [variantIndex, setVariantIndex] = useState(0);
+    const { uuid } = useParams();
+    const { productData, variant, setActiveImageIndex, setVariantIndex, activeImageIndex, variantIndex } = useProduct(uuid || '');
+    const favorites = useSelector((s: RootState) => s.favorites.favorites);
     const [countProduct, setCountProduct] = useState(1);
 
-    useEffect(() => {
-        const getProductData = async () => {
-            const data = await ApiService.getProductVariantsByProduct(uuid!);
-            setProductData(data);
-        };
-        getProductData();
-    }, [uuid]);
-
     const addToCart = useCallback(() => {
-        if (!productData) {
+        if (!variant) {
             return;
         }
         dispatch(
             addCartItem({
-                product_variant_id: productData.variants[variantIndex].uuid,
+                product_variant_id: variant.uuid,
                 quantity: countProduct,
             }),
         );
         setCountProduct(1);
-    }, [countProduct, dispatch, productData, variantIndex]);
+    }, [countProduct, dispatch, variant]);
+
+    const toggleFavorites = useCallback(
+        (e: MouseEvent) => {
+            if (!variant || !productData) {
+                return;
+            }
+
+            const { uuid: product_variant_id, price } = variant;
+            const { uuid, images, name } = productData;
+
+            if (isOnFavorites(product_variant_id, favorites)) {
+                dispatch(removeToFavorites(variant.uuid));
+
+                return;
+            }
+            dispatch(addToFavorites({ uuid, product_variant_id, price, image: images[0] || null, name }));
+        },
+        [dispatch, favorites, productData, variant],
+    );
 
     const setActiveImageFn = useCallback((index: number) => {
-        return () => setActiveImage(index);
+        return () => setActiveImageIndex(index);
     }, []);
 
     const setVariantIndexFn = useCallback((index: number) => {
@@ -62,6 +76,29 @@ export function Product() {
         setCountProduct((prev) => prev + 1);
     }, []);
 
+    const getProductTags = useCallback(() => {
+        return productData ? productData.variants.map((v) => v.tags_id).flat(1) : [];
+    }, [productData]);
+
+    const getTabItems = useCallback(() => {
+        return [
+            {
+                key: '1',
+                label: 'Описание',
+                children: (
+                    <div className={styles.product_bottom}>
+                        <p>{productData?.description}</p>
+                    </div>
+                ),
+            },
+            {
+                key: '2',
+                label: `Комментарии`,
+                children: <ProductReviews productId={uuid} variantId={variant?.uuid}></ProductReviews>,
+            },
+        ];
+    }, [uuid, variant?.uuid]);
+
     return (
         <>
             {!productData && <div>Загрузка...</div>}
@@ -74,10 +111,10 @@ export function Product() {
                                     {productData.images.map((image, index) => {
                                         return (
                                             <div
-                                                key={image}
+                                                key={image + index}
                                                 onClick={setActiveImageFn(index)}
                                                 className={cn(styles.small_image, {
-                                                    [styles.active_small_image]: activeImage === index,
+                                                    [styles.active_small_image]: activeImageIndex === index,
                                                 })}
                                             >
                                                 <img src={image} alt="Изображение продукта" />
@@ -88,7 +125,7 @@ export function Product() {
                             </div>
                             <div className={styles.big_image}>
                                 <img
-                                    src={productData.images[activeImage] || '/image-not-found.png'}
+                                    src={productData.images[activeImageIndex] || '/image-not-found.png'}
                                     alt="Большое изображение продукта"
                                 />
                             </div>
@@ -100,7 +137,6 @@ export function Product() {
                                     <div className={styles.price}>{`${productData.variants[variantIndex].price} ₽`}</div>
                                     <div className={styles.rating_block}>
                                         <Rating rating={productData?.variants[variantIndex].rating}></Rating>
-                                        <div className={styles.count_reviews}>{`${1} Отзывов`}</div>
                                     </div>
                                 </div>
                             </div>
@@ -138,8 +174,15 @@ export function Product() {
                                     <NavigateButton onClick={addToCart} className={styles.invert_button}>
                                         Добавить в корзину
                                     </NavigateButton>
-                                    <NavigateButton className={styles.heart_button}>
-                                        <img src="/icons/heart-icon-green.svg" alt="Иконка сердца" />
+                                    <NavigateButton onClick={toggleFavorites} className={styles.heart_button}>
+                                        <img
+                                            src={
+                                                isOnFavorites(productData.variants[variantIndex].uuid, favorites)
+                                                    ? '/icons/red-heart.svg'
+                                                    : '/icons/heart-icon-green.svg'
+                                            }
+                                            alt="Иконка сердца"
+                                        />
                                     </NavigateButton>
                                 </div>
                             </div>
@@ -153,18 +196,9 @@ export function Product() {
                             </div>
                         </div>
                     </div>
-                    <div className={styles.product_bottom}>
-                        <div className={styles.product_bottom__navigate}>
-                            <div className={styles.product_bottom__navigate_item}>Описание продукта</div>
-                        </div>
-                        <p>{productData?.description}</p>
-                    </div>
-
+                    <Tabs className="tabs" defaultActiveKey="1" items={getTabItems()} />
                     <div className={styles.similar_products}>
-                        <SimilarProducts
-                            className={styles.swiper}
-                            tags={productData?.variants.map((v) => v.tags_id).flat(1)}
-                        ></SimilarProducts>
+                        <SimilarProducts className={styles.swiper} tags={getProductTags()}></SimilarProducts>
                     </div>
                 </div>
             )}

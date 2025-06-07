@@ -20,7 +20,9 @@ export const userSlice = createSlice({
             s.jwt = payload;
         },
         logout: (s) => {
+            s.profile = null;
             s.jwt = null;
+            s.errorMessage = null;
         },
     },
     extraReducers(builder) {
@@ -39,6 +41,8 @@ export const userSlice = createSlice({
             state.errorMessage = error.error.message ?? null;
         });
         builder.addCase(logoutUser.fulfilled, (state) => {
+            state.profile = null;
+            state.errorMessage = null;
             state.jwt = null;
         });
         builder.addCase(logoutUser.rejected, (state) => {
@@ -51,6 +55,7 @@ export const userSlice = createSlice({
             state.errorMessage = error.error.message ?? null;
         });
         builder.addCase(getProfile.fulfilled, (state, action: PayloadAction<GetMeResponseDto>) => {
+            console.log(1);
             state.profile = action.payload;
         });
         builder.addCase(getProfile.rejected, (state, error) => {

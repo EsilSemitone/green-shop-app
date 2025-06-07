@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
-import { ApiService } from '../../../helpers/api.service';
+import { ApiService } from '../../../common/helpers/api.service';
 import { cartActions } from '../cart-slice';
 
 export const deleteToCart = createAsyncThunk(

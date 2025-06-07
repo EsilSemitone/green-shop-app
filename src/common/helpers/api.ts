@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import axios, { Axios } from 'axios';
-import { userSlice } from '../store/user-slice/user.slice';
+import axios, { Axios, AxiosInstance } from 'axios';
+import { userSlice } from '../../store/user-slice/user.slice';
 import { Store } from '@reduxjs/toolkit';
-import { RootState } from '../store/store';
+import { RootState } from '../../store/store';
 import { ApiService } from './api.service';
 
 const api = axios.create({
@@ -24,7 +24,7 @@ function useAuthMiddleware(api: Axios, store: Store<RootState>) {
     });
 }
 
-function useRefreshIntersepter(api, store: Store<RootState>) {
+function useRefreshIntersepter(api: AxiosInstance, store: Store<RootState>) {
     api.interceptors.response.use(
         (response) => response,
         async (error) => {
@@ -33,15 +33,13 @@ function useRefreshIntersepter(api, store: Store<RootState>) {
             if (error.response?.status === 401 && !originalRequest._retry) {
                 originalRequest._retry = true;
 
-                console.log('401 пошел запрос refresh');
-
                 try {
                     const { accessToken } = await ApiService.refresh();
                     store.dispatch(userSlice.actions.setAccessToken(accessToken));
                     originalRequest.headers.Authorization = `Bearer ${accessToken}`;
 
                     return api(originalRequest);
-                } catch (e) {
+                } catch {
                     store.dispatch(userSlice.actions.logout());
                 }
             }

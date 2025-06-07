@@ -36,4 +36,36 @@ export const API = {
     upload: {
         upload: `${API_URL}/api/upload`,
     },
+
+    payment_methods: {
+        getAll: `${API_URL}/api/payment-method`,
+    },
+
+    order: {
+        create: `${API_URL}/api/order`,
+        my: `${API_URL}/api/order/my`,
+        details: (uuid: string) => `${API_URL}/api/order/${uuid}`,
+    },
+
+    favorites: {
+        getAll: `${API_URL}/api/favorites`,
+        add: `${API_URL}/api/favorites`,
+        remove: `${API_URL}/api/favorites`,
+    },
+
+    reviews: {
+        getProductReviews: (productId: string) => `${API_URL}/api/review/product/${productId}`,
+        create: `${API_URL}/api/review`,
+        delete: (uuid: string) => `${API_URL}/api/review/${uuid}`,
+    },
+
+    review_comment: {
+        createReviewComment: (reviewId: string) => `${API_URL}/api/review/${reviewId}/comment`,
+        deleteReviewComment: (reviewId: string, commentId: string) => `${API_URL}/api/review/${reviewId}/comment/${commentId}`,
+    },
+
+    likes: {
+        like: (targetId: string, targetType: string) => `${API_URL}/api/like/${targetId}/${targetType}`,
+        dislike: (targetId: string, targetType: string) => `${API_URL}/api/like/${targetId}/${targetType}`,
+    },
 };

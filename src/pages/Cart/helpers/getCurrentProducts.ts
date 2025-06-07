@@ -1,4 +1,4 @@
-import { ApiService } from '../../../helpers/api.service';
+import { ApiService } from '../../../common/helpers/api.service';
 import { ICartItems } from '../../../store/cart-slice/interfaces/cart-item';
 import { EnrichedCartElement } from '../types/enriched-cart-element';
 

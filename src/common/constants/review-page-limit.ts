@@ -1,0 +1,1 @@
+export const REVIEW_PAGE_LIMIT = 10
