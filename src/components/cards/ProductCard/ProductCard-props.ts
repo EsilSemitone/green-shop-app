@@ -6,4 +6,5 @@ export interface IProductCardProps extends HTMLAttributes<HTMLElement> {
     image: string | null;
     product_variant_id: string;
     uuid: string;
+    isOnFavorites: boolean;
 }

@@ -1,17 +1,21 @@
 import './Swiper.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import styles from './SimilarProducts.module.css';
+import cn from 'classnames';
 import { ISimilarProductsProps } from './SimilarProducts-props';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import { ProductCard } from '../cards/ProductCard/ProductCard';
 import { memo, useCallback, useEffect, useState } from 'react';
 import { GetSimilarProductVariantsResponseDto } from 'contracts';
-import { ApiService } from '../../helpers/api.service';
-import styles from './SimilarProducts.module.css';
-import cn from 'classnames';
+import { ApiService } from '../../common/helpers/api.service';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { isOnFavorites } from '../../common/helpers/is-on-favorites';
 
 export const SimilarProducts = memo(({ className, tags, ...props }: ISimilarProductsProps) => {
+    const favorites = useSelector((s: RootState) => s.favorites.favorites);
     const [similarProducts, setSimilarProducts] = useState<GetSimilarProductVariantsResponseDto>();
 
     const provideSimilarProducts = useCallback(async () => {
@@ -53,6 +57,7 @@ export const SimilarProducts = memo(({ className, tags, ...props }: ISimilarProd
                                     title={p.name}
                                     price={Number(p.price)}
                                     image={p.image}
+                                    isOnFavorites={isOnFavorites(p.product_variant_id, favorites)}
                                 ></ProductCard>
                             </SwiperSlide>
                         ))}

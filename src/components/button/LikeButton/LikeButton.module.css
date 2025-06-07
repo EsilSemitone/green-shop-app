@@ -1,0 +1,13 @@
+.like_button {
+    border: none;
+    background: none;
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    cursor: pointer;
+}
+
+.like_button img {
+    height: 1rem;
+    width: 1rem;
+}

@@ -13,6 +13,7 @@ export const CartItem = memo(({ className, product, ...props }: ICartItemProps) 
     const dispatch = useDispatch<AppDispatch>();
 
     const add = useCallback(() => {
+        console.log(product.product_variant_id);
         dispatch(addToCart({ product_variant_id: product.product_variant_id, quantity: 1 }));
     }, [dispatch, product.product_variant_id]);
 

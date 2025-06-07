@@ -6,8 +6,8 @@ import { categoryInvertMap } from './helpers/category-map';
 import { sizeInvertMap } from './helpers/size-map';
 import { ProductCard } from '../../components/cards/ProductCard/ProductCard';
 import { BlogBlock } from '../../components/BlogBlock/BlogBlock';
-import { ApiService } from '../../helpers/api.service';
-import { useQueryParams } from '../../hooks/use-query-params';
+import { ApiService } from '../../common/helpers/api.service';
+import { useQueryParams } from '../../common/hooks/use-query-params';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { IProductFilterState } from '../../store/product-filter-slice/interfaces/product-filter-state.interface';
@@ -23,12 +23,16 @@ import { BASE_PRICE_RANGE } from './constants/base-price-range';
 import { Slider } from 'antd';
 import { Pagination } from '../../components/Pagination/Pagination';
 import { useDebounce } from 'use-debounce';
+import { isOnFavorites } from '../../common/helpers/is-on-favorites';
 
 export function Shop() {
     const dispatch = useDispatch<AppDispatch>();
+    const favorites = useSelector((s: RootState) => s.favorites.favorites);
+    const filter = useSelector((s: RootState) => s.productFilter);
+    
+
     const { getParam, getParams, setManyParams } = useQueryParams();
     const [filterOptions, setFilterOptions] = useState<GetProductFilterResponseDto | null>(null);
-    const filter = useSelector((s: RootState) => s.productFilter);
     const [products, setProducts] = useState<GetProductVariantsByCriteriaResponseDto | null>(null);
     const [productsError, setProductsError] = useState<string | null>(null);
 
@@ -253,6 +257,7 @@ export function Shop() {
                                           price={p.price}
                                           image={p.image}
                                           product_variant_id={p.product_variant_id}
+                                          isOnFavorites={isOnFavorites(p.product_variant_id, favorites)}
                                       ></ProductCard>
                                   );
                               })

@@ -1,23 +1,30 @@
+import { memo } from 'react';
 import { IOrderItemProps } from './OrderItem-props';
 import styles from './OrderItem.module.css';
 import cn from 'classnames';
 
-export function OrderItem({ className, product, ...props }: IOrderItemProps) {
+export const OrderItem = memo(({ className, product, ...props }: IOrderItemProps) => {
     return (
-        <div {...props} className={cn(styles['cart-item'], className)}>
-            <div className={styles['cart-item--head']}>
-                <img className={styles['cart-item--image']} src={product.images[0]} alt="Изображение продукта" />
-                <div className={styles['cart-item--description']}>
-                    <div className={styles['product-name']}>{product.name}</div>
-                    <div className={styles['product-id']}>Product ID: <span>{product.uuid}</span></div>
+        <div {...props} className={cn(styles.order_item, className)}>
+            <div className={styles.order_item__head}>
+                <img
+                    className={styles.order_item__image}
+                    src={product.image || 'image-not-found.png'}
+                    alt="Изображение продукта"
+                />
+                <div className={styles.order_item__description}>
+                    <div className={styles.product_name}>{product.name}</div>
+                    <div className={styles.product_id}>
+                        ID продукта: <span>{product.product_variant_id}</span>
+                    </div>
                 </div>
             </div>
-            <div className={styles['cart-item--quantity']}>
-                <div className={styles['product-count']}>{`(x ${product.count})`}</div>
-            </div>
-            <div className={styles['cart-item--price']}>
-                ${product.price}
+            <div className={styles.order_item__body}>
+                <div className={styles.order_item__quantity}>
+                    <div className={styles.product_count}>{`(x ${product.quantity})`}</div>
+                </div>
+                <div className={styles.order_item__price}>${product.price}</div>
             </div>
         </div>
     );
-}
+});

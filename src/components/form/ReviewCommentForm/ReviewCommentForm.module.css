@@ -1,0 +1,18 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: max(30%, 20rem);
+}
+
+.input {
+    height: 5rem;
+}
+
+.title {
+    font-size: 1.6rem;
+}
+
+.error {
+    color: var(--error-color);
+}

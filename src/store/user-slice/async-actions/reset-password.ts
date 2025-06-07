@@ -1,7 +1,7 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AxiosError } from "axios";
-import { ResetPasswordRequestDto } from "contracts";
-import { ApiService } from "../../../helpers/api.service";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AxiosError } from 'axios';
+import { ResetPasswordRequestDto } from 'contracts';
+import { ApiService } from '../../../common/helpers/api.service';
 
 export const resetPassword = createAsyncThunk('user/reset', async (resetData: ResetPasswordRequestDto) => {
     try {

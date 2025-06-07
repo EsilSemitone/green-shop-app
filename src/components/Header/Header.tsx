@@ -1,5 +1,6 @@
 import { Link, NavLink, useNavigate } from 'react-router';
 import styles from './Header.module.css';
+import './headers.css';
 import cn from 'classnames';
 import { Button } from '../common/Button/Button';
 import { useCallback, useEffect, useState } from 'react';
@@ -8,7 +9,7 @@ import { AppDispatch, RootState } from '../../store/store';
 import { logoutUser } from '../../store/user-slice/async-actions/logout';
 import { cartActions } from '../../store/cart-slice/cart-slice';
 import { useDebounce } from 'use-debounce';
-import { ApiService } from '../../helpers/api.service';
+import { ApiService } from '../../common/helpers/api.service';
 import { IProduct } from '../../common/interfaces/product.interface';
 import { AuthModal } from '../modal/AuthModal/AuthModal';
 import { getAmountItems } from './helpers/get-amount-items';

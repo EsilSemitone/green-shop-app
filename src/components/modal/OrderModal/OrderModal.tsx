@@ -1,197 +1,77 @@
+import { memo, useEffect, useState } from 'react';
 import { Button } from '../../common/Button/Button';
 import { Modal } from '../../common/Modal/Modal';
 import { OrderComponent } from '../../OrderComponent/OrderComponent';
 import { IModalProps } from './OrderModal-props';
 import styles from './OrderModal.module.css';
-import { PAYMENT_METHOD } from 'contracts/enums/payment-method.ts';
+import { getTotal } from './helpers/get-total';
+import { getCurrentOrderItems } from './helpers/getCurrentOrderItems';
+import { IExtendedOrderItem } from '../../../common/interfaces/extended-order-item.interface';
 
-export function OrderModal({ isOpen, onClose, ...props }: IModalProps) {
-    const delivery = 16;
+export const OrderModal = memo(({ isOpen, onClose, order, ...props }: IModalProps) => {
+    const [items, setItems] = useState<IExtendedOrderItem[] | null>(null);
 
-    const getTotal = (
-        products: {
-            uuid: string;
-            name: string;
-            price: number;
-            images: string[];
-            count: number;
-        }[],
-    ) => {
-        return products.reduce((acc, value) => {
-            return acc + value.price * value.count;
-        }, 0);
-    };
+    useEffect(() => {
+        if (!order) {
+            return;
+        }
+        const provideImageForOrderItems = async () => {
+            const currentItems = await getCurrentOrderItems(order.items);
+            setItems(currentItems);
+        };
+        provideImageForOrderItems();
+    }, [order]);
 
-    const order = {
-        orderId: 'fj3c934m90c043r',
-        createdAt: new Date().toISOString(),
-        paymentMethod: PAYMENT_METHOD.YOOKASSA,
-        products: [
-            {
-                uuid: '1',
-                name: 'Barberton Daisy',
-                price: 119,
-                images: [
-                    '/test-image.png',
-                    '/test-image2.png',
-                    '/test-image.png',
-                    '/test-image2.png',
-                    '/test-image.png',
-                    '/test-image2.png',
-                ],
-                count: 12,
-            },
-            {
-                uuid: '2',
-                name: 'Barberton Daisy',
-                price: 119,
-                images: [
-                    '/test-image.png',
-                    '/test-image2.png',
-                    '/test-image.png',
-                    '/test-image2.png',
-                    '/test-image.png',
-                    '/test-image2.png',
-                ],
-                count: 12,
-            },
-            {
-                uuid: '3',
-                name: 'Barberton Daisy',
-                price: 119,
-                images: [
-                    '/test-image.png',
-                    '/test-image2.png',
-                    '/test-image.png',
-                    '/test-image2.png',
-                    '/test-image.png',
-                    '/test-image2.png',
-                ],
-                count: 12,
-            },
-            {
-                uuid: '4',
-                name: 'Barberton Daisy',
-                price: 119,
-                images: [
-                    '/test-image.png',
-                    '/test-image2.png',
-                    '/test-image.png',
-                    '/test-image2.png',
-                    '/test-image.png',
-                    '/test-image2.png',
-                ],
-                count: 12,
-            },
-            {
-                uuid: '5',
-                name: 'Barberton Daisy',
-                price: 119,
-                images: [
-                    '/test-image.png',
-                    '/test-image2.png',
-                    '/test-image.png',
-                    '/test-image2.png',
-                    '/test-image.png',
-                    '/test-image2.png',
-                ],
-                count: 12,
-            },
-            {
-                uuid: '6',
-                name: 'Barberton Daisy',
-                price: 119,
-                images: [
-                    '/test-image.png',
-                    '/test-image2.png',
-                    '/test-image.png',
-                    '/test-image2.png',
-                    '/test-image.png',
-                    '/test-image2.png',
-                ],
-                count: 12,
-            },
-            {
-                uuid: '7',
-                name: 'Barberton Daisy',
-                price: 119,
-                images: [
-                    '/test-image.png',
-                    '/test-image2.png',
-                    '/test-image.png',
-                    '/test-image2.png',
-                    '/test-image.png',
-                    '/test-image2.png',
-                ],
-                count: 12,
-            },
-            {
-                uuid: '8',
-                name: 'Barberton Daisy',
-                price: 119,
-                images: [
-                    '/test-image.png',
-                    '/test-image2.png',
-                    '/test-image.png',
-                    '/test-image2.png',
-                    '/test-image.png',
-                    '/test-image2.png',
-                ],
-                count: 12,
-            },
-        ],
-    };
+    if (!order) {
+        return null;
+    }
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <div className={styles['order-header']}>
-                <div className={styles['order-header--top']}>
+            <div className={styles.order_header}>
+                <div className={styles.order_header__top}>
                     <img src="/icons/create-order-icon.svg" alt="Изображение с благодарностью за заказ" />
-                    Your order has been received
+                    Ваш заказ оформлен.
                 </div>
-                <div className={styles['order-header-details']}>
-                    <div className={styles['order-header-details--item']}>
-                        <div className={styles['item--title']}>Order Number</div>
-                        <div className={styles['item--value']}>{order.orderId}</div>
+                <div className={styles.order_header_details}>
+                    <div className={styles.order_header_details__item}>
+                        <div className={styles.item__title}>ID Заказа</div>
+                        <div className={styles.item__value}>{order.uuid}</div>
                     </div>
-                    <div className={styles['order-header-details--item']}>
-                        <div className={styles['item--title']}>Date</div>
-                        <div className={styles['item--value']}>{new Date(order.createdAt).toLocaleDateString()}</div>
+                    <div className={styles.order_header_details__item}>
+                        <div className={styles.item__title}>Дата</div>
+                        <div className={styles.item__value}>{new Date(order.created_at).toLocaleDateString()}</div>
                     </div>
-                    <div className={styles['order-header-details--item']}>
-                        <div className={styles['item--title']}>Total</div>
-                        <div className={styles['item--value']}>{getTotal(order.products)}</div>
+                    <div className={styles.order_header_details__item}>
+                        <div className={styles.item__title}>Всего</div>
+                        <div className={styles.item__value}>{`${getTotal(order.items, order.shipping_price)}₽`}</div>
                     </div>
-                    <div className={styles['order-header-details--item']}>
-                        <div className={styles['item--title']}>Payment Method</div>
-                        <div className={styles['item--value']}>{order.paymentMethod}</div>
+                    <div className={styles.order_header_details__item}>
+                        <div className={styles.item__title}>Метод оплаты</div>
+                        <div className={styles.item__value}>{order.payment_method}</div>
                     </div>
                 </div>
-                <div className={styles['cart-container']}>
-                    <OrderComponent products={order.products}></OrderComponent>
+                {items && (
+                    <div className={styles.order_container}>
+                        <OrderComponent products={items}></OrderComponent>
+                    </div>
+                )}
+            </div>
+            <div className={styles.total_container}>
+                <div className={styles.total_container__inner}>
+                    <div className={styles.total_item}>
+                        <div className={styles.total_item__left}>Доставка</div>
+                        <div className={styles.total_item__right}>{`${order.shipping_price}₽`}</div>
+                    </div>
+                    <div className={styles.total_result_item}>
+                        <div className={styles.total_result_left_item}>Всего</div>
+                        <div className={styles.total_result_right_item}>{`${getTotal(order.items, order.shipping_price)}₽`}</div>
+                    </div>
                 </div>
             </div>
-            <div className={styles['total-container']}>
-                <div className={styles['total-container--inner']}>
-                    <div className={styles['total-item']}>
-                        <div className={styles['total-item--left']}>Delivery</div>
-                        <div className={styles['total-item--right']}>{`$${delivery}`}</div>
-                    </div>
-                    <div className={styles['total-result-item']}>
-                        <div className={styles['total-result-left-item']}>Total</div>
-                        <div className={styles['total-result-right-item']}>{`$${getTotal(order.products) + delivery}`}</div>
-                    </div>
-                </div>
-            </div>
-            <div className={styles['exit-button']}>
-                <Button
-                    onClick={() => {
-                        onClose();
-                    }}
-                >
-                    Выход
-                </Button>
+            <div className={styles.exit_button}>
+                <Button onClick={onClose}>Выход</Button>
             </div>
         </Modal>
     );
-}
+});

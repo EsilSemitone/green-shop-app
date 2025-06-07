@@ -5,7 +5,7 @@ import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { updateUser } from '../../store/user-slice/async-actions/update-user';
-import { ApiService } from '../../helpers/api.service';
+import { ApiService } from '../../common/helpers/api.service';
 
 export function AccountMe() {
     const dispatch = useDispatch<AppDispatch>();

@@ -1,0 +1,18 @@
+.orders {
+    font-size: 1.1em;
+    height: 50rem;
+}
+
+.orders h1 {
+    padding-left: 5rem;
+}
+
+.green_link {
+    color: var(--green);
+    font-weight: 600;
+}
+
+.orders_container {
+    height: 40rem;
+    padding: 3rem 0;
+}

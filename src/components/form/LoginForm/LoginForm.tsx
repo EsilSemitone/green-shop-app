@@ -13,6 +13,8 @@ import { syncCart } from '../../../store/cart-slice/async-actions/sync-cart';
 import { LOCALSTORAGE_KEYS } from '../../../store/localstorage/localstorage-keys';
 import { removeItem } from '../../../store/localstorage/localstorage';
 import { PasswordInput } from '../../input/PasswordInput/PasswordInput';
+import { getAllFavorites } from '../../../store/favorites/async-actions/get-all-favorites';
+import { getProfile } from '../../../store/user-slice/async-actions/get-profile';
 
 export function LoginForm({ className, setForm, onClose, ...props }: ILoginFormProps) {
     const errorMessage = useSelector((s: RootState) => s.user.errorMessage);
@@ -33,6 +35,8 @@ export function LoginForm({ className, setForm, onClose, ...props }: ILoginFormP
 
         if (loginUser.fulfilled.match(resultAction)) {
             dispatch(syncCart(cartItems));
+            dispatch(getProfile());
+            dispatch(getAllFavorites());
             removeItem(LOCALSTORAGE_KEYS.GUEST_CART);
             if (onClose) {
                 onClose();

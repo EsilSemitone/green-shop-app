@@ -14,7 +14,9 @@ export const ROUTES = {
         me: '/account/me',
         address: '/account/address',
         orders: '/account/orders',
-        wishlist: '/account/wishlist',
+        order: '/account/orders/:uuid',
+        orderDynamic: (uuid: string) => `/account/orders/${uuid}`,
+        favorites: '/account/favorites',
     },
     error: '*',
 };

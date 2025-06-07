@@ -11,13 +11,15 @@ import { getCurrentProducts } from './helpers/getCurrentProducts';
 import { EnrichedCartElement } from './types/enriched-cart-element';
 import { getTotal } from './helpers/get-total';
 import { getAllAddress } from '../../store/address-slice/async-actions/get-all-address';
-import { DELIVERY_PRICE } from './constants/delivery-price';
 import { AuthModal } from '../../components/modal/AuthModal/AuthModal';
 import { OrderModal } from '../../components/modal/OrderModal/OrderModal';
 import { extractTagsFromProducts } from './helpers/extract-tags-from-products';
 import { ROUTES } from '../../common/constants/routes';
 import { RadioChangeEvent } from 'antd';
 import { Radio } from '../../components/Radio/Radio';
+import { ApiService } from '../../common/helpers/api.service';
+import { ExtendedOrder, PaymentMethod } from 'contracts';
+import { cartActions } from '../../store/cart-slice/cart-slice';
 
 export function Cart() {
     const dispatch = useDispatch<AppDispatch>();
@@ -28,10 +30,13 @@ export function Cart() {
 
     const [products, setProducts] = useState<EnrichedCartElement[]>([]);
     const [address, setAddress] = useState<string | null>(null);
-    const [payment, setPayment] = useState<PAYMENT_METHOD>(PAYMENT_METHOD.YOOKASSA);
+    const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
+    const [activePayment, setActivePayment] = useState<PAYMENT_METHOD>();
 
     const [orderModalIsOpen, setOrderModalIsOpen] = useState(false);
     const [authModalIsOpen, setAuthModalIsOpen] = useState(false);
+
+    const [order, setOrder] = useState<ExtendedOrder | null>(null);
 
     useEffect(() => {
         const provideProducts = async () => {
@@ -42,8 +47,15 @@ export function Cart() {
         const provideAddresses = async () => {
             await dispatch(getAllAddress());
         };
+
+        const providePaymentMethods = async () => {
+            const paymentMethods = await ApiService.getPaymentMethods();
+            setPaymentMethods(paymentMethods.methods);
+            setActivePayment(paymentMethods.methods[0].name as PAYMENT_METHOD);
+        };
         provideAddresses();
         provideProducts();
+        providePaymentMethods();
     }, []);
 
     useEffect(() => {
@@ -71,7 +83,7 @@ export function Cart() {
     };
 
     const selectPayment = (e: RadioChangeEvent) => {
-        setPayment(e.target.value);
+        setActivePayment(e.target.value);
     };
 
     const openAuthModal = () => {
@@ -82,7 +94,32 @@ export function Cart() {
         setAuthModalIsOpen(false);
     };
 
-    const openOrderModal = () => {
+    const createOrder = async () => {
+        if (!address || !activePayment) {
+            console.log('Не выбран адрес или способ оплаты');
+            return;
+        }
+        const create = async (address_id: string, payment_method: PAYMENT_METHOD) => {
+            try {
+                const { isSuccess, payload } = await ApiService.createOrder({ payment_method, address_id });
+
+                if (!isSuccess || !payload.data) {
+                    console.error('Не удалось создать заказ');
+                    return;
+                }
+
+                setOrder(payload.data);
+                dispatch(cartActions.clearCart());
+
+                if (payload.payment_link) {
+                    window.open(payload.payment_link, '_blank', 'noopener,noreferrer');
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
+        create(address, activePayment);
         setOrderModalIsOpen(true);
     };
 
@@ -103,11 +140,16 @@ export function Cart() {
                         </div>
                         <div className={styles.total_item}>
                             <div className={styles.total_item__left}>Доставка</div>
-                            <div className={styles.total_item__right}>{`${DELIVERY_PRICE}₽`}</div>
+                            <div className={styles.total_item__right}>{`${
+                                paymentMethods.find((m) => m.name === activePayment)?.price
+                            }₽`}</div>
                         </div>
                         <div className={styles.total_result_item}>
                             <div className={styles.total_result_left_item}>Общая сумма</div>
-                            <div className={styles.total_result_right_item}>{`${getTotal(products) + DELIVERY_PRICE}₽`}</div>
+                            <div className={styles.total_result_right_item}>{`${getTotal(
+                                products,
+                                Number(paymentMethods.find((m) => m.name === activePayment)?.price || 0),
+                            )}₽`}</div>
                         </div>
                     </div>
                     {!isAuthorized && (
@@ -120,7 +162,7 @@ export function Cart() {
                     )}
                     {isAuthorized && (
                         <>
-                            <Button onClick={openOrderModal}>Сделать заказ</Button>
+                            <Button onClick={createOrder}>Сделать заказ</Button>
                             <div className={styles.select}>
                                 <div>Адрес</div>
                                 {addresses.length === 0 && (
@@ -155,19 +197,18 @@ export function Cart() {
                                 <div>Метод оплаты</div>
                                 <Radio
                                     name="paymentGroup"
-                                    defaultValue={PAYMENT_METHOD.YOOKASSA}
+                                    value={activePayment}
                                     onChange={selectPayment}
-                                    options={[
-                                        { value: PAYMENT_METHOD.YOOKASSA, label: 'Оплата ЮКасса' },
-                                        { value: PAYMENT_METHOD.CASH, label: 'Оплата при получении' },
-                                    ]}
+                                    options={paymentMethods.map((m) => {
+                                        return { value: m.name, label: m.description };
+                                    })}
                                 ></Radio>
                             </div>
                         </>
                     )}
                 </div>
             </div>
-            <OrderModal isOpen={orderModalIsOpen} onClose={closeOrderModal}></OrderModal>
+            <OrderModal isOpen={orderModalIsOpen} onClose={closeOrderModal} order={order}></OrderModal>
             <AuthModal isOpen={authModalIsOpen} onClose={closeAuthModal}></AuthModal>
 
             <SimilarProducts className={styles.swiper} tags={extractTagsFromProducts(products)}></SimilarProducts>

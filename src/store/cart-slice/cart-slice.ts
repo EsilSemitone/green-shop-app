@@ -7,13 +7,13 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState: INITIAL_STATE,
     reducers: {
-        addToCartLocal: (s, { payload }: PayloadAction<{ product_variant_id: string; quantity: number }>) => {
+        addToCartLocal: (s, { payload }: PayloadAction<{ product_variant_id: string; quantity: number; uuid: string }>) => {
             const item = s.items.find((i) => i.product_variant_id === payload.product_variant_id);
             if (item) {
                 item.quantity += payload.quantity;
             } else {
                 s.items.push({
-                    uuid: 'unknown',
+                    uuid: payload.uuid,
                     product_variant_id: payload.product_variant_id,
                     quantity: payload.quantity,
                 });
@@ -42,9 +42,6 @@ const cartSlice = createSlice({
         builder.addCase(syncCart.fulfilled, (state, action: PayloadAction<SyncCartResponseDto>) => {
             state.items = action.payload;
         });
-        // builder.addCase(addToCart.fulfilled, (state, action: PayloadAction<any>) => {
-        //     console.log(action.payload);
-        // });
     },
 });
 

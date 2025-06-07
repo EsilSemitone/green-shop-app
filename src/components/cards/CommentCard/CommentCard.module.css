@@ -1,0 +1,30 @@
+.comment_cart {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.name {
+    font-weight: 600;
+}
+
+.comment_cart__header {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.content {
+    padding-left: 1rem;
+}
+
+.delete_button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.delete_button img {
+    height: 1rem;
+    width: 1rem;
+}

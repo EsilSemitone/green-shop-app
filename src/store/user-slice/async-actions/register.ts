@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 import { IRegisterForm } from '../../../components/form/RegisterForm/interfaces/register-form';
-import { ApiService } from '../../../helpers/api.service';
+import { ApiService } from '../../../common/helpers/api.service';
 
 export const registerUser = createAsyncThunk('user/register', async (registerData: IRegisterForm) => {
     try {

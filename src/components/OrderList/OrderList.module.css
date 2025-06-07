@@ -1,0 +1,22 @@
+.order_list {
+    padding: 0 5rem;
+    font-size: 1rem;
+
+    @media (max-width: 920px) {
+        padding: 0 0 0 0;
+    }
+
+    /* @media (max-width: 770px) {
+        overflow-x: scroll;
+    } */
+}
+
+.arrow_icon {
+    height: 25px;
+}
+
+.link {
+    &:hover {
+        color: var(--green-hover) !important;
+    }
+}

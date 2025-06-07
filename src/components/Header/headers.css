@@ -1,0 +1,11 @@
+.green_badge .ant-badge-count {
+    background-color: var(--green);
+}
+
+.green_badge:hover .ant-badge-count {
+    background-color: var(--green-hover) !important;
+}
+
+.green_badge .ant-badge-count:hover {
+    background-color: var(--green-hover) !important;
+}
