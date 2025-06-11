@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
-import { LoginSchemaRequestDto } from 'contracts';
+import { LoginSchemaRequestDto } from 'contracts-green-shop';
 import { ApiService } from '../../../common/helpers/api.service';
 
 export const loginUser = createAsyncThunk('user/login', async (loginData: LoginSchemaRequestDto) => {

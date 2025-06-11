@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { INITIAL_STATE } from './constants/initial-state';
-import { RegisterSchemaResponseDto } from 'contracts/auth/register.schema.ts';
-import { GetMeResponseDto, LoginSchemaResponseDto, UpdateUserResponseDto } from 'contracts';
+import { RegisterSchemaResponseDto } from 'contracts-green-shop/auth/register.schema.ts';
+import { GetMeResponseDto, LoginSchemaResponseDto, UpdateUserResponseDto } from 'contracts-green-shop';
 import { registerUser } from './async-actions/register';
 import { loginUser } from './async-actions/login';
 import { logoutUser } from './async-actions/logout';

@@ -6,7 +6,7 @@ import { cartActions } from '../cart-slice';
 export const removeToCart = createAsyncThunk(
     'cart/remove',
     async ({ product_variant_id }: { product_variant_id: string }, { getState, dispatch }) => {
-        const state: RootState = getState();
+        const state: RootState = (getState as () => RootState)();
         const isAuth = state.user.jwt;
 
         if (isAuth) {

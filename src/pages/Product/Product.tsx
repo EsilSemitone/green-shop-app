@@ -1,6 +1,6 @@
 import styles from './Product.module.css';
 import cn from 'classnames';
-import { MouseEvent, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { NavigateButton } from '../../components/button/NavigateButton/NavigateButton';
 import { sizeMap } from './helpers/size-map';
 import { SimilarProducts } from '../../components/SimilarProducts/SimilarProducts';
@@ -39,24 +39,21 @@ export function Product() {
         setCountProduct(1);
     }, [countProduct, dispatch, variant]);
 
-    const toggleFavorites = useCallback(
-        (e: MouseEvent) => {
-            if (!variant || !productData) {
-                return;
-            }
+    const toggleFavorites = useCallback(() => {
+        if (!variant || !productData) {
+            return;
+        }
 
-            const { uuid: product_variant_id, price } = variant;
-            const { uuid, images, name } = productData;
+        const { uuid: product_variant_id, price } = variant;
+        const { uuid, images, name } = productData;
 
-            if (isOnFavorites(product_variant_id, favorites)) {
-                dispatch(removeToFavorites(variant.uuid));
+        if (isOnFavorites(product_variant_id, favorites)) {
+            dispatch(removeToFavorites(variant.uuid));
 
-                return;
-            }
-            dispatch(addToFavorites({ uuid, product_variant_id, price, image: images[0] || null, name }));
-        },
-        [dispatch, favorites, productData, variant],
-    );
+            return;
+        }
+        dispatch(addToFavorites({ uuid, product_variant_id, price, image: images[0] || null, name }));
+    }, [dispatch, favorites, productData, variant]);
 
     const setActiveImageFn = useCallback((index: number) => {
         return () => setActiveImageIndex(index);

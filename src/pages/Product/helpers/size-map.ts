@@ -1,7 +1,7 @@
-import { SIZE } from "contracts/enums/size.ts";
+import { SIZE } from 'contracts-green-shop/enums/size.ts';
 
 export const sizeMap = new Map([
-    [SIZE.SMALL, "S"],
-    [SIZE.MEDIUM, "M"],
-    [SIZE.LARGE, "L"],
-])
+    [SIZE.SMALL, 'S'],
+    [SIZE.MEDIUM, 'M'],
+    [SIZE.LARGE, 'L'],
+]);

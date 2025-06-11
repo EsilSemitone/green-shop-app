@@ -1,4 +1,4 @@
-import { SIZE } from 'contracts/enums/size.ts';
+import { SIZE } from 'contracts-green-shop/enums/size.ts';
 
 export const sizeMap = new Map<string, SIZE>([
     ['Небольшой', SIZE.SMALL],

@@ -1,5 +1,9 @@
 import './Swiper.css';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
 import 'swiper/css';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
 import 'swiper/css/pagination';
 import styles from './SimilarProducts.module.css';
 import cn from 'classnames';
@@ -8,7 +12,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import { ProductCard } from '../cards/ProductCard/ProductCard';
 import { memo, useCallback, useEffect, useState } from 'react';
-import { GetSimilarProductVariantsResponseDto } from 'contracts';
+import { GetSimilarProductVariantsResponseDto } from 'contracts-green-shop';
 import { ApiService } from '../../common/helpers/api.service';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';

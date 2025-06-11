@@ -1,4 +1,4 @@
-import { OrderItem } from 'contracts';
+import { OrderItem } from 'contracts-green-shop';
 
 export function getTotal(items: OrderItem[], shipping_price: number): string {
     const itemsTotal = items

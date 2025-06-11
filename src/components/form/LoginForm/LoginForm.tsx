@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { Button } from '../../common/Button/Button';
 import { Input } from '../../common/Input/Input';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { LoginSchemaRequest, LoginSchemaRequestDto } from 'contracts/auth/login.schema.ts';
+import { LoginSchemaRequest, LoginSchemaRequestDto } from 'contracts-green-shop/auth/login.schema.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store/store';

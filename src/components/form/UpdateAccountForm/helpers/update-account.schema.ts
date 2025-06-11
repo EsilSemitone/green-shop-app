@@ -1,4 +1,4 @@
-import { UpdateUserRequestSchema } from 'contracts/user/update-user.ts';
+import { UpdateUserRequestSchema } from 'contracts-green-shop/user/update-user.ts';
 import { z } from 'zod';
 
 export const UpdateAccountSchema = UpdateUserRequestSchema.omit({

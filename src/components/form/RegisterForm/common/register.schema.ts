@@ -1,4 +1,4 @@
-import { RegisterSchemaRequest } from 'contracts/auth/register.schema.ts';
+import { RegisterSchemaRequest } from 'contracts-green-shop/auth/register.schema.ts';
 import { z } from 'zod';
 
 export const RegisterSchema = RegisterSchemaRequest.extend({

@@ -1,5 +1,5 @@
-import { ExtendedReviewComment } from 'contracts';
-import { ExtendedReview } from 'contracts/review/extended-review.schema.ts';
+import { ExtendedReviewComment } from 'contracts-green-shop';
+import { ExtendedReview } from 'contracts-green-shop/review/extended-review.schema.ts';
 import { HTMLAttributes } from 'react';
 
 export interface IReviewCardProps extends HTMLAttributes<HTMLElement> {

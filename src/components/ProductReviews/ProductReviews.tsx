@@ -4,7 +4,7 @@ import { IProductReviewsProps } from './ProductReviews.props';
 import { RootState } from '../../store/store';
 import { useReviews } from '../../common/hooks/use-comments';
 import { REVIEW_PAGE_LIMIT } from '../../common/constants/review-page-limit.ts';
-import { ORDER_BY_REVIEWS, ORDER_BY_REVIEWS_ENUM } from 'contracts/enums/order-by-my-reviews.ts';
+import { ORDER_BY_REVIEWS, ORDER_BY_REVIEWS_ENUM } from 'contracts-green-shop/enums/order-by-my-reviews.ts';
 import { useCallback } from 'react';
 import { ReviewForm } from '../form/ReviewForm/ReviewForm.tsx';
 import { Select } from 'antd';

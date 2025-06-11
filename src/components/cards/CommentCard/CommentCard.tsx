@@ -3,7 +3,7 @@ import styles from './CommentCard.module.css';
 import { Avatar } from 'antd';
 import { ICommentCardProps } from './CommentCard.props';
 import { ApiService } from '../../../common/helpers/api.service';
-import { LIKE_TYPE } from 'contracts/enums/like-type.ts';
+import { LIKE_TYPE } from 'contracts-green-shop/enums/like-type';
 import { LikeButton } from '../../button/LikeButton/LikeButton';
 
 export const CommentCard = memo(({ comment, userId, deleteReviewComment, reviewId }: ICommentCardProps) => {
@@ -54,5 +54,5 @@ export const CommentCard = memo(({ comment, userId, deleteReviewComment, reviewI
             </div>
             <div className={styles.content}>{comment.content}</div>
         </div>
-    );  
+    );
 });

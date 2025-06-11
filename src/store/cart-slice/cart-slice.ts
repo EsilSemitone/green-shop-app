@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { INITIAL_STATE } from './helpers/initial-state';
 import { syncCart } from './async-actions/sync-cart';
-import { SyncCartResponseDto } from 'contracts';
+import { SyncCartResponseDto } from 'contracts-green-shop';
 
 const cartSlice = createSlice({
     name: 'cart',

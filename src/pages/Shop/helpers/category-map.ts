@@ -1,4 +1,4 @@
-import { PRODUCT_CATEGORY, PRODUCT_CATEGORY_ENUM } from 'contracts/enums/product-category.ts';
+import { PRODUCT_CATEGORY, PRODUCT_CATEGORY_ENUM } from 'contracts-green-shop/enums/product-category.ts';
 
 export const categoryMap = new Map<string, PRODUCT_CATEGORY>([
     ['Домашние растения', PRODUCT_CATEGORY_ENUM.HOUSE_PLANTS],

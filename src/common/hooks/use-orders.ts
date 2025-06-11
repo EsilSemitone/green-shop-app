@@ -1,4 +1,4 @@
-import { Order } from 'contracts';
+import { Order } from 'contracts-green-shop';
 import { useEffect, useState } from 'react';
 import { ApiService } from '../helpers/api.service';
 

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
-import { UpdateUserRequestDto } from 'contracts';
+import { UpdateUserRequestDto } from 'contracts-green-shop';
 import { ApiService } from '../../../common/helpers/api.service';
 import { appActions } from '../../app-slice/app.slice';
 import { MESSAGE_TYPE } from '../../app-slice/enums/message-type';

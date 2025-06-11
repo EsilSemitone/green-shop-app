@@ -4,7 +4,7 @@ import { memo } from 'react';
 import { IOrderListProps } from './OrderList.props';
 import { Table, Tag } from 'antd';
 import Column from 'antd/es/table/Column';
-import { ORDER_STATUS } from 'contracts';
+import { ORDER_STATUS } from 'contracts-green-shop';
 import { Link } from 'react-router';
 import { ROUTES } from '../../common/constants/routes';
 import { orderStatusColorMap } from './helpers/order-status-color-map';
