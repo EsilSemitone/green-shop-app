@@ -1,4 +1,4 @@
-import { ExtendedReviewComment } from 'contracts';
+import { ExtendedReviewComment } from 'contracts-green-shop';
 import { HTMLAttributes } from 'react';
 
 export interface IReviewCommentFormProps extends HTMLAttributes<HTMLElement> {

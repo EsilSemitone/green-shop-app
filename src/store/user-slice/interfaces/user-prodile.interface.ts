@@ -1,4 +1,4 @@
-import { ROLES } from 'contracts/enums/roles.ts';
+import { ROLES } from 'contracts-green-shop/enums/roles.ts';
 
 export interface IUserProfile {
     uuid: string;

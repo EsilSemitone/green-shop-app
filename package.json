@@ -17,7 +17,7 @@
     "antd": "^5.25.1",
     "axios": "^1.8.4",
     "classnames": "^2.5.1",
-    "contracts": "file:../contracts",
+    "contracts-green-shop": "^1.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.56.1",

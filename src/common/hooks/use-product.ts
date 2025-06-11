@@ -1,4 +1,4 @@
-import { GetProductVariantsByProductResponseDto } from 'contracts';
+import { GetProductVariantsByProductResponseDto } from 'contracts-green-shop';
 import { useEffect, useState } from 'react';
 import { ApiService } from '../helpers/api.service';
 

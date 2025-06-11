@@ -27,7 +27,7 @@ export const OrderModal = memo(({ isOpen, onClose, order, ...props }: IModalProp
     }
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal {...props} isOpen={isOpen} onClose={onClose}>
             <div className={styles.order_header}>
                 <div className={styles.order_header__top}>
                     <img src="/icons/create-order-icon.svg" alt="Изображение с благодарностью за заказ" />

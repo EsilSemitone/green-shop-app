@@ -1,4 +1,4 @@
-import { OrderItem } from 'contracts';
+import { OrderItem } from 'contracts-green-shop';
 import { ApiService } from '../../../../common/helpers/api.service';
 import { IExtendedOrderItem } from '../../../../common/interfaces/extended-order-item.interface';
 

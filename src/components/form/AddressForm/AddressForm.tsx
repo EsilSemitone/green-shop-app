@@ -3,7 +3,7 @@ import { Button } from '../../common/Button/Button';
 import { Input } from '../../common/Input/Input';
 import styles from './AddressForm.module.css';
 import cn from 'classnames';
-import { CreateAddressRequestDto, CreateAddressRequestSchema } from 'contracts/address/create-address.ts';
+import { CreateAddressRequestDto, CreateAddressRequestSchema } from 'contracts-green-shop/address/create-address.ts';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store/store';

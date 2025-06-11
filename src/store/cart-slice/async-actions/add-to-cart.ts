@@ -8,7 +8,7 @@ import { MESSAGE_TYPE } from '../../app-slice/enums/message-type';
 export const addToCart = createAsyncThunk(
     'cart/add',
     async ({ product_variant_id, quantity }: { product_variant_id: string; quantity: number }, { getState, dispatch }) => {
-        const state: RootState = getState();
+        const state = (getState as () => RootState)();
         const isAuth = state.user.jwt;
 
         if (isAuth) {

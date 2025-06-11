@@ -1,4 +1,4 @@
-import { ExtendedReview } from 'contracts/review/extended-review.schema';
+import { ExtendedReview } from 'contracts-green-shop/review/extended-review.schema';
 import { HTMLAttributes } from 'react';
 
 export interface IReviewFormProps extends HTMLAttributes<HTMLElement> {

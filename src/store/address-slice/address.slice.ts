@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { INITIAL_STATE } from './constants/initial-state';
 import { createAddress } from './async-actions/create-address';
-import { CreateAddressResponseDto, GetAllAddressesResponseDto } from 'contracts';
+import { CreateAddressResponseDto, GetAllAddressesResponseDto } from 'contracts-green-shop';
 import { getAllAddress } from './async-actions/get-all-address';
 import { deleteAddress } from './async-actions/delete-address';
 

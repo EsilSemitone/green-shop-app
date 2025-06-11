@@ -27,7 +27,7 @@ export const useQueryParams = () => {
     };
 
     const setManyParams = (updates: Record<string, string>) => {
-        setSearchParams((prev) => {
+        setSearchParams(() => {
             const params = new URLSearchParams();
             Object.entries(updates).forEach(([key, value]) => {
                 params.set(key, value);

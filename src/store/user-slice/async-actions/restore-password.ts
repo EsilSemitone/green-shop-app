@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
-import { RestorePasswordRequestDto } from 'contracts';
+import { RestorePasswordRequestDto } from 'contracts-green-shop';
 import { ApiService } from '../../../common/helpers/api.service';
 
 export const restorePassword = createAsyncThunk('user/restore', async ({ email }: RestorePasswordRequestDto) => {

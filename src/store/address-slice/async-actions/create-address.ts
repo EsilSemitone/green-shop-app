@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ApiService } from '../../../common/helpers/api.service';
-import { CreateAddressRequestDto } from 'contracts';
+import { CreateAddressRequestDto } from 'contracts-green-shop';
 import { AxiosError } from 'axios';
 
 export const createAddress = createAsyncThunk('address/create', async (createData: CreateAddressRequestDto) => {

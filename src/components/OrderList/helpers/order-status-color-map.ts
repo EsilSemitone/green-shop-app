@@ -1,4 +1,4 @@
-import { ORDER_STATUS } from 'contracts/enums/order-status.ts';
+import { ORDER_STATUS } from 'contracts-green-shop/enums/order-status';
 import { OrderStatusColor } from '../types/order-status-color';
 
 export const orderStatusColorMap = new Map<ORDER_STATUS, OrderStatusColor>([

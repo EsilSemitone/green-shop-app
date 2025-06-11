@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { INITIAL_STATE } from './constants/initial-state';
 import { getAllFavorites } from './async-actions/get-all-favorites';
-import { AddToFavoritesResponseDto, GetAllFavoritesResponseDto } from 'contracts';
+import { AddToFavoritesResponseDto, GetAllFavoritesResponseDto } from 'contracts-green-shop';
 import { removeToFavorites } from './async-actions/remove-to-favorites';
 import { addToFavorites } from './async-actions/add-to-favorites';
 import { IFavoriteProductItem } from './interfaces/favorite-product-item';

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ApiService } from '../helpers/api.service';
-import { ExtendedReviewComment, ORDER_BY_REVIEWS } from 'contracts';
-import { ExtendedReview } from 'contracts/review/extended-review.schema';
+import { ExtendedReviewComment, ORDER_BY_REVIEWS } from 'contracts-green-shop';
+import { ExtendedReview } from 'contracts-green-shop/review/extended-review.schema';
 
 type UseReviewsQuery = {
     limit: number;

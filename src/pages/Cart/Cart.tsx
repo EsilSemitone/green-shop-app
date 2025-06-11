@@ -4,7 +4,7 @@ import { Button } from '../../components/common/Button/Button';
 import { CartComponent } from '../../components/CartComponent/CartComponent';
 import { SimilarProducts } from '../../components/SimilarProducts/SimilarProducts';
 import { useEffect, useState } from 'react';
-import { PAYMENT_METHOD } from 'contracts/enums/payment-method.ts';
+import { PAYMENT_METHOD } from 'contracts-green-shop/enums/payment-method.ts';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { getCurrentProducts } from './helpers/getCurrentProducts';
@@ -18,7 +18,7 @@ import { ROUTES } from '../../common/constants/routes';
 import { RadioChangeEvent } from 'antd';
 import { Radio } from '../../components/Radio/Radio';
 import { ApiService } from '../../common/helpers/api.service';
-import { ExtendedOrder, PaymentMethod } from 'contracts';
+import { ExtendedOrder, PaymentMethod } from 'contracts-green-shop';
 import { cartActions } from '../../store/cart-slice/cart-slice';
 
 export function Cart() {

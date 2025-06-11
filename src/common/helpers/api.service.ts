@@ -40,8 +40,7 @@ import {
     DeleteReviewResponseDto,
     CreateReviewCommentResponseDto,
     DeleteReviewCommentResponseDto,
-    CreateLikeRequestParamsDto,
-} from 'contracts';
+} from 'contracts-green-shop';
 import { API } from './api-routs';
 import { IRegisterForm } from '../../components/form/RegisterForm/interfaces/register-form';
 import api from './api';

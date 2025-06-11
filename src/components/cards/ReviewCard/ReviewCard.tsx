@@ -7,7 +7,7 @@ import { CommentCard } from '../CommentCard/CommentCard';
 import { ApiService } from '../../../common/helpers/api.service';
 import { ReviewCommentForm } from '../../form/ReviewCommentForm/ReviewCommentForm';
 import { LikeButton } from '../../button/LikeButton/LikeButton';
-import { LIKE_TYPE } from 'contracts/enums/like-type.ts';
+import { LIKE_TYPE } from 'contracts-green-shop/enums/like-type';
 
 export const ReviewCart = memo(({ review, userId, deleteReview, addReviewComment, deleteReviewComment }: IReviewCardProps) => {
     const [isLiked, setIsLiked] = useState(review.liked_by_me);
