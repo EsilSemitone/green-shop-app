@@ -4,7 +4,7 @@ import { useOrderDetails } from '../../common/hooks/use-order-details';
 import { OrderComponent } from '../../components/OrderComponent/OrderComponent';
 import { getTotal } from './helpers/get-total';
 
-export function Order() {
+export default function Order() {
     const { uuid } = useParams();
     const { orderDetails } = useOrderDetails(uuid);
 

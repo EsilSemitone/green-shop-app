@@ -19,7 +19,7 @@ export const ProductCard = memo(
         const addFromCart = (e: MouseEvent) => {
             e.preventDefault();
             e.stopPropagation();
-            
+
             dispatch(addToCart({ product_variant_id, quantity: 1 }));
         };
 

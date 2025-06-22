@@ -194,7 +194,7 @@ export class ApiService {
     }
 
     static async removeToFavorites(product_variant_id: string): Promise<RemoveToFavoritesResponseDto> {
-        const { data } = await api.post<RemoveToFavoritesResponseDto>(API.favorites.add, { product_variant_id });
+        const { data } = await api.delete<RemoveToFavoritesResponseDto>(API.favorites.remove, { data: { product_variant_id } });
         return data;
     }
 

@@ -67,7 +67,16 @@
     width: 100%;
 }
 
-.big_image img {
+/* .big_image img {
+    @media (max-width: 575px) {
+        width: 220px;
+        height: 220px;
+    }
+} */
+
+.image {
+    /* max-height: 20rem !important; */
+    min-width: 10rem !important;
     @media (max-width: 575px) {
         width: 220px;
         height: 220px;

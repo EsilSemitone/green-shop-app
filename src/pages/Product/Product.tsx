@@ -16,9 +16,11 @@ import { removeToFavorites } from '../../store/favorites/async-actions/remove-to
 import { addToFavorites } from '../../store/favorites/async-actions/add-to-favorites';
 import { useProduct } from '../../common/hooks/use-product';
 import { ProductReviews } from '../../components/ProductReviews/ProductReviews';
-import { Tabs } from 'antd';
+import { Flex, Spin, Tabs } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Image } from 'antd';
 
-export function Product() {
+export default function Product() {
     const dispatch = useDispatch<AppDispatch>();
 
     const { uuid } = useParams();
@@ -98,7 +100,11 @@ export function Product() {
 
     return (
         <>
-            {!productData && <div>Загрузка...</div>}
+            {!productData && (
+                <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
+                    <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
+                </Flex>
+            )}
             {productData && (
                 <div className={cn(styles.product_container)}>
                     <div className={styles.product_top}>
@@ -121,10 +127,14 @@ export function Product() {
                                 </div>
                             </div>
                             <div className={styles.big_image}>
-                                <img
+                                <Image
+                                    className={styles.image}
+                                    src={productData.images[activeImageIndex] || '/image-not-found.png'}
+                                />
+                                {/* <img
                                     src={productData.images[activeImageIndex] || '/image-not-found.png'}
                                     alt="Большое изображение продукта"
-                                />
+                                /> */}
                             </div>
                         </div>
                         <div className={styles.product_detail}>

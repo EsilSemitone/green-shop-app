@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from '../../store/store';
 import { getAllAddress } from '../../store/address-slice/async-actions/get-all-address';
 import { AddressCart } from '../../components/cards/AddressCard/AddressCard';
 
-export function AccountAddress() {
+export default function AccountAddress() {
     const { addresses } = useSelector((s: RootState) => s.address);
     const dispatch = useDispatch<AppDispatch>();
 
