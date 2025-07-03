@@ -18,5 +18,16 @@ export const ROUTES = {
         orderDynamic: (uuid: string) => `/account/orders/${uuid}`,
         favorites: '/account/favorites',
     },
+    admin: {
+        layout: '/admin',
+        users: '/admin/users/all',
+        userStats: '/admin/users/stats',
+        user: '/admin/users/:uuid',
+        userDynamic: (uuid: string) => `/admin/users/${uuid}`,
+        products: '/admin/products',
+        product: '/admin/products/:uuid',
+        productDynamic: (uuid: string) => `/admin/products/${uuid}`,
+        createProduct: '/admin/create-product',
+    },
     error: '*',
 };

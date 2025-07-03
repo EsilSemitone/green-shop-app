@@ -40,6 +40,27 @@ import {
     DeleteReviewResponseDto,
     CreateReviewCommentResponseDto,
     DeleteReviewCommentResponseDto,
+    GetAllUsersRequestQueryDto,
+    GetAllUsersResponseDto,
+    GetUserResponseDto,
+    UpdateUserAdminRequestDto,
+    UpdateUserAdminResponseDto,
+    AddAdminUserResponseDto,
+    DeleteUserAdminResponseDto,
+    GetStatsUsersRequestParamsDto,
+    GetStatsUsersResponseDto,
+    GetAllProductsRequestQueryDto,
+    GetAllProductsResponseDto,
+    UpdateProductRequestDto,
+    UpdateProductResponseDto,
+    UpdateProductVariantRequestDto,
+    UpdateProductVariantResponseDto,
+    DeleteProductVariantResponseDto,
+    GetAllTagsResponseDto,
+    CreateProductVariantResponseDto,
+    CreateProductVariantRequestDto,
+    CreateProductRequestDto,
+    CreateProductResponseDto,
 } from 'contracts-green-shop';
 import { API } from './api-routs';
 import { IRegisterForm } from '../../components/form/RegisterForm/interfaces/register-form';
@@ -236,5 +257,87 @@ export class ApiService {
 
     static async dislike(targetId: string, targetType: string): Promise<void> {
         await api.delete<DeleteReviewCommentResponseDto>(API.likes.dislike(targetType, targetId));
+    }
+
+    static async getUsers(query: GetAllUsersRequestQueryDto): Promise<GetAllUsersResponseDto> {
+        const { data } = await api.get<GetAllUsersResponseDto>(API.user.getUsers, { params: query });
+        return data;
+    }
+
+    static async getUser(uuid: string): Promise<GetUserResponseDto> {
+        const { data } = await api.get<GetUserResponseDto>(API.user.getUser(uuid));
+        return data;
+    }
+
+    static async updateAdminUser(uuid: string, updateData: UpdateUserAdminRequestDto): Promise<UpdateUserAdminResponseDto> {
+        const { data } = await api.patch<UpdateUserAdminResponseDto>(API.user.updateUserAdmin(uuid), updateData);
+        return data;
+    }
+
+    static async addAdminUser(email: string): Promise<AddAdminUserResponseDto> {
+        const { data } = await api.post<AddAdminUserResponseDto>(API.user.addAdmin, { email });
+        return data;
+    }
+
+    static async deleteAdminUser(uuid: string): Promise<DeleteUserAdminResponseDto> {
+        const { data } = await api.delete<DeleteUserAdminResponseDto>(API.user.deleteUserAdmin(uuid));
+        return data;
+    }
+
+    static async getUsersStats(query: GetStatsUsersRequestParamsDto): Promise<GetStatsUsersResponseDto> {
+        const { data } = await api.get<GetStatsUsersResponseDto>(API.user.getUsersStats, { params: query });
+        return data;
+    }
+
+    static async getAdminProducts(query: GetAllProductsRequestQueryDto): Promise<GetAllProductsResponseDto> {
+        const { data } = await api.get<GetAllProductsResponseDto>(API.product.getAdminProducts, { params: query });
+        return data;
+    }
+
+    static async getProductWithProductVariant(uuid: string): Promise<GetProductVariantsByProductResponseDto> {
+        const { data } = await api.get<GetProductVariantsByProductResponseDto>(API.product.getProductWithProductVariant(uuid));
+        return data;
+    }
+
+    static async updateProduct(uuid: string, updateData: UpdateProductRequestDto): Promise<UpdateProductResponseDto> {
+        const { data } = await api.patch<GetProductVariantsByProductResponseDto>(API.product.updateProduct(uuid), updateData);
+        return data;
+    }
+
+    static async updateProductVariant(
+        productId: string,
+        variantId: string,
+        updateData: UpdateProductVariantRequestDto,
+    ): Promise<UpdateProductVariantResponseDto> {
+        const { data } = await api.patch<UpdateProductVariantResponseDto>(
+            API.product.updateProductVariant(productId, variantId),
+            updateData,
+        );
+        return data;
+    }
+
+    static async deleteProductVariant(productId: string, variantId: string): Promise<DeleteProductVariantResponseDto> {
+        const { data } = await api.delete<DeleteProductVariantResponseDto>(
+            API.product.deleteProductVariant(productId, variantId),
+        );
+        return data;
+    }
+
+    static async getAllTags(): Promise<GetAllTagsResponseDto> {
+        const { data } = await api.get<GetAllTagsResponseDto>(API.tags.getAllTags);
+        return data;
+    }
+
+    static async createProductVariant(
+        productId: string,
+        createData: CreateProductVariantRequestDto,
+    ): Promise<CreateProductVariantResponseDto> {
+        const { data } = await api.post<CreateProductVariantResponseDto>(API.product.createProductVariant(productId), createData);
+        return data;
+    }
+
+    static async createProduct(createData: CreateProductRequestDto): Promise<CreateProductResponseDto> {
+        const { data } = await api.post<CreateProductResponseDto>(API.product.createProduct, createData);
+        return data;
     }
 }

@@ -5,4 +5,5 @@ export const PRODUCT_FILTER_QUERY = {
     priceTo: 'priceTo',
     limit: 'limit',
     offset: 'offset',
+    orderBy: 'orderBy',
 };

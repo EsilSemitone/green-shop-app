@@ -10,9 +10,21 @@
 
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 0.3rem;
 
     &:hover {
         background-color: var(--green-hover);
+    }
+}
+
+.delete {
+    background-color: var(--white);
+    border: 1px solid var(--error-color);
+    color: var(--error-color);
+
+    &:hover {
+        background-color: var(--error-color);
+        color: var(--white);
     }
 }

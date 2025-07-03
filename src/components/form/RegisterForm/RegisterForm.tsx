@@ -16,6 +16,10 @@ import { LOCALSTORAGE_KEYS } from '../../../store/localstorage/localstorage-keys
 import { PasswordInput } from '../../input/PasswordInput/PasswordInput';
 import { getAllFavorites } from '../../../store/favorites/async-actions/get-all-favorites';
 import { getProfile } from '../../../store/user-slice/async-actions/get-profile';
+import { Alert } from 'antd';
+import { useEffect } from 'react';
+import { appActions } from '../../../store/app-slice/app.slice';
+import { MESSAGE_TYPE } from '../../../store/app-slice/enums/message-type';
 
 export function RegisterForm({ className, onClose, ...props }: IRegisterFormProps) {
     const dispatch = useDispatch<AppDispatch>();
@@ -46,24 +50,17 @@ export function RegisterForm({ className, onClose, ...props }: IRegisterFormProp
         reset();
     };
 
+    useEffect(() => {
+        if (errorMessage) {
+            dispatch(appActions.setMessage({ type: MESSAGE_TYPE.ERROR, content: errorMessage }));
+        }
+    }, [errorMessage]);
+
     return (
         <div className={styles.login_form__container}>
             <div className={styles.title}>Введите свой адрес электронной почты и пароль для регистрации.</div>
-            <div>
-                {errors.password && <p className={styles.error}>{errors.password.message}</p>}
-                {errors.name && <p className={styles.error}>{errors.name.message}</p>}
-                {errors.email && (
-                    <p>
-                        {' '}
-                        className={styles.error}
-                        {errors.email.message}
-                    </p>
-                )}
-                {errors.confirm_password && <p className={styles.error}>{errors.confirm_password.message}</p>}
-                {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-            </div>
-
             <form {...props} className={cn(styles.login_form, className)} onSubmit={handleSubmit(submit)}>
+                {errors.name && <Alert showIcon message={errors.name.message} type="error" />}
                 <Input
                     {...register('name')}
                     className={cn(styles.login_form__input)}
@@ -71,6 +68,7 @@ export function RegisterForm({ className, onClose, ...props }: IRegisterFormProp
                     id="name"
                     placeholder="Ваше имя"
                 ></Input>
+                {errors.email && <Alert showIcon message={errors.email.message} type="error" />}
                 <Input
                     {...register('email')}
                     className={cn(styles.login_form__input)}
@@ -78,12 +76,14 @@ export function RegisterForm({ className, onClose, ...props }: IRegisterFormProp
                     id="email"
                     placeholder="Введите вашу почту"
                 ></Input>
+                {errors.password && <Alert showIcon message={errors.password.message} type="error" />}
                 <PasswordInput
                     register={register}
                     registerName={'password'}
                     id={'password'}
                     placeholder={'Пароль'}
                 ></PasswordInput>
+                {errors.confirm_password && <Alert showIcon message={errors.confirm_password.message} type="error" />}
                 <PasswordInput
                     register={register}
                     registerName={'confirm_password'}

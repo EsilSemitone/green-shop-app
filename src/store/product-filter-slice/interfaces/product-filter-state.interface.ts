@@ -1,4 +1,4 @@
-import { PRODUCT_CATEGORY, SIZE } from 'contracts-green-shop';
+import { ORDER_BY_PRODUCT_VARIANTS, PRODUCT_CATEGORY, SIZE } from 'contracts-green-shop';
 
 export interface IProductFilterState {
     category: PRODUCT_CATEGORY | null;
@@ -7,4 +7,5 @@ export interface IProductFilterState {
     priceTo: number | null;
     limit: number | null;
     offset: number | null;
+    orderBy: ORDER_BY_PRODUCT_VARIANTS | null;
 }

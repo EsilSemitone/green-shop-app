@@ -131,10 +131,6 @@ export default function Product() {
                                     className={styles.image}
                                     src={productData.images[activeImageIndex] || '/image-not-found.png'}
                                 />
-                                {/* <img
-                                    src={productData.images[activeImageIndex] || '/image-not-found.png'}
-                                    alt="Большое изображение продукта"
-                                /> */}
                             </div>
                         </div>
                         <div className={styles.product_detail}>

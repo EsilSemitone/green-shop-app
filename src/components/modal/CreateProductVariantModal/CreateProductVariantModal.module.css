@@ -1,0 +1,19 @@
+.form {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    & p {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    & input {
+        width: 100%;
+    }
+}
+
+.ghost_input {
+    display: none;
+}

@@ -40,6 +40,11 @@ a {
     color: var(--text-color);
 }
 
+a:hover {
+    text-decoration: none;
+    color: var(--green) !important;
+}
+
 .tabs .ant-tabs-tab-active > .ant-tabs-tab-btn {
     color: var(--green) !important;
 }
@@ -57,4 +62,16 @@ a {
 
 .ant-select-item-option-selected {
     background-color: var(--green-background) !important;
+}
+
+.ant-select-selector:hover {
+    border-color: var(--green) !important;
+}
+
+.ant-select-open .ant-select-selector {
+    border-color: var(--green) !important;
+}
+
+.ant-select-focused .ant-select-selector {
+    border-color: var(--green) !important;
 }

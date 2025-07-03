@@ -15,6 +15,8 @@ import { PRODUCT_FILTER_QUERY } from './constants/product-filter-query-params';
 import {
     GetProductFilterResponseDto,
     GetProductVariantsByCriteriaResponseDto,
+    ORDER_BY_PRODUCT_VARIANTS,
+    ORDER_BY_PRODUCT_VARIANTS_ENUM,
     PRODUCT_CATEGORY,
     SIZE,
 } from 'contracts-green-shop';
@@ -28,7 +30,8 @@ import { BASE_PRICE_RANGE } from './constants/base-price-range';
 import { Pagination } from '../../components/Pagination/Pagination';
 import { isOnFavorites } from '../../common/helpers/is-on-favorites';
 import { CustomSlider } from '../../components/Slider/Slider';
-import { ISliderResultValue } from '../../components/Slider/interfaces/slider-result-value.interface';
+import { Select, Skeleton } from 'antd';
+import { useDebounce } from 'use-debounce';
 
 export function Shop() {
     const dispatch = useDispatch<AppDispatch>();
@@ -39,6 +42,12 @@ export function Shop() {
     const [filterOptions, setFilterOptions] = useState<GetProductFilterResponseDto | null>(null);
     const [products, setProducts] = useState<GetProductVariantsByCriteriaResponseDto | null>(null);
     const [productsError, setProductsError] = useState<string | null>(null);
+
+    const [sliderValue, setSliderValue] = useState<[number, number]>([
+        filterOptions?.prices.min ?? BASE_PRICE_RANGE.min,
+        filterOptions?.prices.max ?? BASE_PRICE_RANGE.max,
+    ]);
+    const [sliderDebounceValue] = useDebounce(sliderValue, 300);
 
     useEffect(() => {
         async function init() {
@@ -59,6 +68,9 @@ export function Shop() {
                     priceTo: priceTo ? Number.parseFloat(priceTo) : options.prices.max,
                     limit: limit ? Number(limit) : PAGE_PRODUCTS,
                     offset: offset ? Number(offset) : 0,
+                    orderBy:
+                        getParam<ORDER_BY_PRODUCT_VARIANTS>(PRODUCT_FILTER_QUERY.orderBy) ??
+                        ORDER_BY_PRODUCT_VARIANTS_ENUM.FIRST_NEW,
                 };
                 dispatch(productFilterActions.setProductFilter(filterState));
             } catch {
@@ -105,12 +117,16 @@ export function Shop() {
         dispatch(productFilterActions.setProductFilter({ size, limit: PAGE_PRODUCTS, offset: 0 }));
     };
 
-    const onChangeSlider = useCallback(
-        (value: ISliderResultValue) => {
-            dispatch(productFilterActions.setProductFilter({ priceFrom: value.from, priceTo: value.to }));
-        },
-        [dispatch],
-    );
+    const onChangeSlider = useCallback((value: number | number[]) => {
+        if (typeof value === 'number') {
+            return;
+        }
+        setSliderValue([value[0], value[1]]);
+    }, []);
+
+    useEffect(() => {
+        dispatch(productFilterActions.setProductFilter({ priceFrom: sliderDebounceValue[0], priceTo: sliderDebounceValue[1] }));
+    }, [sliderDebounceValue]);
 
     const resetFilter = () => {
         const params = {
@@ -120,8 +136,10 @@ export function Shop() {
             priceTo: filterOptions?.prices.max || BASE_PRICE_RANGE.max,
             limit: PAGE_PRODUCTS,
             offset: 0,
+            orderBy: ORDER_BY_PRODUCT_VARIANTS_ENUM.FIRST_NEW,
         };
         dispatch(productFilterActions.setProductFilter(params));
+        setSliderValue([filterOptions?.prices.min ?? BASE_PRICE_RANGE.min, filterOptions?.prices.max ?? BASE_PRICE_RANGE.max]);
     };
 
     const goToPage = (p: number) => {
@@ -138,6 +156,10 @@ export function Shop() {
         }
         return null;
     };
+
+    const onChangeOrderBy = useCallback((value: ORDER_BY_PRODUCT_VARIANTS) => {
+        dispatch(productFilterActions.setProductFilter({ orderBy: value }));
+    }, []);
 
     return (
         <div className={styles.shop}>
@@ -182,7 +204,7 @@ export function Shop() {
                             </div>
                         )}
 
-                        {!filterOptions && <div>Skeleton</div>}
+                        {!filterOptions && <Skeleton />}
                     </div>
                     <div className={styles.filter_menu__item}>
                         <div className={styles.filter_menu__title}>Цена</div>
@@ -192,6 +214,7 @@ export function Shop() {
                                     onChangeSlider={onChangeSlider}
                                     min={filterOptions?.prices.min}
                                     max={filterOptions?.prices.max}
+                                    value={sliderValue}
                                 ></CustomSlider>
 
                                 <div className={cn(styles.price_info)}>
@@ -203,7 +226,7 @@ export function Shop() {
                                 </div>
                             </div>
                         )}
-                        {!filterOptions && <div>Skeleton</div>}
+                        {!filterOptions && <Skeleton />}
                     </div>
                     <div className={styles.filter_menu__item}>
                         <div className={styles.filter_menu__title}>Размер</div>
@@ -230,13 +253,24 @@ export function Shop() {
                                 })}
                             </div>
                         )}
-                        {!filterOptions && <div>Skeleton</div>}
+                        {!filterOptions && <Skeleton />}
                     </div>
                     <div className={styles.filter_menu__item}>
                         <Button onClick={resetFilter}>Сбросить</Button>
                     </div>
                 </div>
                 <div className={styles.products}>
+                    <Select
+                        defaultValue={ORDER_BY_PRODUCT_VARIANTS_ENUM.FIRST_NEW}
+                        style={{ width: 170 }}
+                        onChange={onChangeOrderBy}
+                        options={[
+                            { value: ORDER_BY_PRODUCT_VARIANTS_ENUM.FIRST_NEW, label: 'Сначало новые' },
+                            { value: ORDER_BY_PRODUCT_VARIANTS_ENUM.FIRST_OLD, label: 'Сначало старые' },
+                            { value: ORDER_BY_PRODUCT_VARIANTS_ENUM.FIRST_CHEAP, label: 'Сначало дешевые' },
+                            { value: ORDER_BY_PRODUCT_VARIANTS_ENUM.FIRST_EXPENSIVE, label: 'Сначало дорогие' },
+                        ]}
+                    />
                     <div className={styles.products_container}>
                         {productsError && <div>{productsError}</div>}
                         {products && products.products.length === 0 && <div>Пока нет продуктов, ожидаем поступление</div>}
@@ -245,7 +279,7 @@ export function Shop() {
                                   return (
                                       <ProductCard
                                           uuid={p.uuid}
-                                          key={`${p.uuid}${p.price}`}
+                                          key={`${p.product_variant_id}`}
                                           title={p.name}
                                           price={p.price}
                                           image={p.image}
@@ -259,7 +293,6 @@ export function Shop() {
                     {renderPagination()}
                 </div>
             </div>
-            <BlogBlock></BlogBlock>
         </div>
     );
 }

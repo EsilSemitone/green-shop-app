@@ -12,6 +12,7 @@ import { AppDispatch } from '../../../store/store';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '../../../store/user-slice/async-actions/update-user';
 import { memo } from 'react';
+import { Alert } from 'antd';
 
 export const UpdateAccountForm = memo(({ name, email, phone_number }: IUpdateAccountFormProps) => {
     const dispatch = useDispatch<AppDispatch>();
@@ -36,20 +37,13 @@ export const UpdateAccountForm = memo(({ name, email, phone_number }: IUpdateAcc
 
     return (
         <form className={styles.update_account_form} onSubmit={handleSubmit(submit)}>
-            <div>
-                {Object.entries(errors).map(([key, b]) => (
-                    <p key={`${b.type}${key}`} className={styles.error}>
-                        {b.message}
-                    </p>
-                ))}
-                {/* {errorMessage && <p className={styles['error']}>{errorMessage}</p>} */}
-            </div>
             <div className={styles.form_module}>
                 <div className={styles.title}>Личная информация</div>
                 <div className={styles.form_item}>
                     <label className={styles.form_item__title} htmlFor="name">
                         Имя
                     </label>
+                    {errors.name && <Alert showIcon message={errors.name.message} type="error" />}
                     <Input
                         {...register('name')}
                         className={styles.login_form__input}
@@ -62,6 +56,7 @@ export const UpdateAccountForm = memo(({ name, email, phone_number }: IUpdateAcc
                     <label className={styles.form_item__title} htmlFor="email">
                         Почта
                     </label>
+                    {errors.email && <Alert showIcon message={errors.email.message} type="error" />}
                     <Input
                         {...register('email')}
                         className={styles.login_form__input}
@@ -74,6 +69,7 @@ export const UpdateAccountForm = memo(({ name, email, phone_number }: IUpdateAcc
                     <label className={styles.form_item__title} htmlFor="phone_number">
                         Номер телефона
                     </label>
+                    {errors.phone_number && <Alert showIcon message={errors.phone_number.message} type="error" />}
                     <Input
                         {...register('phone_number')}
                         className={styles.login_form__input}
@@ -88,6 +84,8 @@ export const UpdateAccountForm = memo(({ name, email, phone_number }: IUpdateAcc
 
                 <div className={cn(styles.password_input__container, styles.form_item)}>
                     <div>Новый пароль</div>
+                    {errors.password && <Alert showIcon message={errors.password.message} type="error" />}
+
                     <PasswordInput
                         register={register}
                         registerName="password"
@@ -97,6 +95,7 @@ export const UpdateAccountForm = memo(({ name, email, phone_number }: IUpdateAcc
                 </div>
                 <div className={cn(styles.password_input__container, styles.form_item)}>
                     <div>Повторите пароль</div>
+                    {errors.confirm_password && <Alert showIcon message={errors.confirm_password.message} type="error" />}
                     <PasswordInput
                         register={register}
                         registerName="confirm_password"
