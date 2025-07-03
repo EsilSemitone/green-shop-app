@@ -41,6 +41,7 @@ export function Header() {
                     const { products } = await ApiService.getProducts(
                         `limit=10&offset=0&orderBy=${ORDER_BY_PRODUCT_VARIANTS_ENUM.FIRST_NEW}&search=${searchValue}`,
                     );
+
                     setSearchResult(products);
                 } catch {
                     setSearchResult([]);
