@@ -18,6 +18,7 @@ import { SearchInput } from '../input/SearchInput/SearchInput';
 import { Badge } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import { BurgerMenu } from '../BurgerMenu/BurgerMenu';
+import { ORDER_BY_PRODUCT_VARIANTS_ENUM } from 'contracts-green-shop';
 
 export function Header() {
     const navigate = useNavigate();
@@ -37,7 +38,9 @@ export function Header() {
         if (searchValue) {
             const provideSearchResult = async () => {
                 try {
-                    const { products } = await ApiService.getProducts(`limit=10&offset=0&search=${searchValue}`);
+                    const { products } = await ApiService.getProducts(
+                        `limit=10&offset=0&orderBy=${ORDER_BY_PRODUCT_VARIANTS_ENUM.FIRST_NEW}&search=${searchValue}`,
+                    );
                     setSearchResult(products);
                 } catch {
                     setSearchResult([]);
