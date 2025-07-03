@@ -5,7 +5,6 @@ import { IFilterItemEvent } from './interfaces/category.interface';
 import { categoryInvertMap } from './helpers/category-map';
 import { sizeInvertMap } from './helpers/size-map';
 import { ProductCard } from '../../components/cards/ProductCard/ProductCard';
-import { BlogBlock } from '../../components/BlogBlock/BlogBlock';
 import { ApiService } from '../../common/helpers/api.service';
 import { useQueryParams } from '../../common/hooks/use-query-params';
 import { useDispatch, useSelector } from 'react-redux';
