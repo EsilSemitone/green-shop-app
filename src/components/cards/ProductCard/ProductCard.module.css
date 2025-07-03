@@ -1,6 +1,6 @@
 .product_cart {
-    width: 200px;
-    height: 340px;
+    width: 190px;
+    height: 320px;
     display: flex;
     flex-direction: column;
     gap: 2rem;

@@ -40,12 +40,12 @@ export const useQueryParams = () => {
         setSearchParams(new URLSearchParams());
     };
 
-    const getAll = () => {
+    const getAll = <T extends object = Record<string, string>>(): T => {
         const result: Record<string, string> = {};
         searchParams.forEach((value, key) => {
             result[key] = value;
         });
-        return result;
+        return result as T;
     };
 
     return {
@@ -56,5 +56,6 @@ export const useQueryParams = () => {
         resetAll,
         getAll,
         getParams,
+        searchParams,
     };
 };

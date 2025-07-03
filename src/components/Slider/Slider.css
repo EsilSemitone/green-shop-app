@@ -1,0 +1,21 @@
+.green_slider .ant-slider-track {
+    background-color: var(--green) !important;
+}
+
+.green_slider {
+    &.ant-slider-track {
+        background-color: var(--green) !important;
+    }
+}
+
+.green_slider .ant-slider-handle::after {
+    box-shadow: 0 0 0 2px var(--green-hover);
+    background-color: #ffffff;
+}
+
+.green_slider .ant-slider-handle::after {
+    box-shadow: 0 0 0 2px var(--green-hover) !important;
+}
+.green_slider:focus .ant-slider-handle::before {
+    box-shadow: 0 0 0 2px var(--green-hover) !important;
+}

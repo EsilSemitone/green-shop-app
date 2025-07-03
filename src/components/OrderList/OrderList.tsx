@@ -22,7 +22,7 @@ export const OrderList = memo(({ orders }: IOrderListProps) => {
     };
 
     return (
-        <Table className={styles.order_list} dataSource={orders} pagination={false} scroll={{ y: 600, x: 700 }}>
+        <Table className={styles.order_list} dataSource={orders} pagination={{}} scroll={{ y: 600, x: 700 }}>
             <Column
                 title="Id"
                 dataIndex="uuid"

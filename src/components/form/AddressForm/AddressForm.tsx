@@ -9,6 +9,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store/store';
 import { createAddress } from '../../../store/address-slice/async-actions/create-address';
 import { IAddressFormProps } from './AddressForm.props';
+import { Alert } from 'antd';
+import { useEffect } from 'react';
+import { appActions } from '../../../store/app-slice/app.slice';
+import { MESSAGE_TYPE } from '../../../store/app-slice/enums/message-type';
 
 export function AddressForm({ className }: IAddressFormProps) {
     const errorMessage = useSelector((s: RootState) => s.address.errorMessage);
@@ -31,20 +35,19 @@ export function AddressForm({ className }: IAddressFormProps) {
         }
     };
 
+    useEffect(() => {
+        if (errorMessage) {
+            dispatch(appActions.setMessage({ type: MESSAGE_TYPE.ERROR, content: errorMessage }));
+        }
+    }, [errorMessage]);
+
     return (
         <form className={cn(styles.account_form, className)} onSubmit={handleSubmit(submit)}>
             <div className={styles.form_module}>
                 <h2>Адреса доставки</h2>
                 <div>Здесь вы можете добавить адреса на которые мы доставим вам ваши заказы.</div>
-                <div>
-                    {Object.entries(errors).map(([key, b]) => (
-                        <p key={`${b.type}${key}`} className={styles['error']}>
-                            {b.message}
-                        </p>
-                    ))}
-                    {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-                </div>
                 <div className={styles.form_item}>
+                    {errors.city && <Alert showIcon message={errors.city.message} type="error" />}
                     <label className={styles.form_item__title} htmlFor="city">
                         Город
                     </label>
@@ -57,7 +60,8 @@ export function AddressForm({ className }: IAddressFormProps) {
                     ></Input>
                 </div>
                 <div className={styles.form_item}>
-                    <label className={styles.form_item__title} htmlFor="city">
+                    {errors.street_address && <Alert showIcon message={errors.street_address.message} type="error" />}
+                    <label className={styles.form_item__title} htmlFor="street">
                         Улица
                     </label>
                     <Input
@@ -69,6 +73,7 @@ export function AddressForm({ className }: IAddressFormProps) {
                     ></Input>
                 </div>
                 <div className={styles.form_item}>
+                    {errors.phone_number && <Alert showIcon message={errors.phone_number.message} type="error" />}
                     <label className={styles.form_item__title} htmlFor="phone-number">
                         Номер телефона
                     </label>

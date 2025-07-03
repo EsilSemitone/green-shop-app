@@ -5,11 +5,11 @@ import { ApiService } from '../../../common/helpers/api.service';
 
 export const loginUser = createAsyncThunk('user/login', async (loginData: LoginSchemaRequestDto) => {
     try {
-        const data = ApiService.login(loginData);
+        const data = await ApiService.login(loginData);
         return data;
     } catch (e) {
         if (e instanceof AxiosError) {
-            throw new Error(e.response?.data.error);
+            throw new Error(e.response?.data?.error || e.message);
         }
         throw new Error('Неизвестная ошибка');
     }

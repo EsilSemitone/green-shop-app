@@ -6,7 +6,7 @@ import { IRatingProps } from './Rating.props';
 export const Rating = memo(({ className, rating }: IRatingProps) => {
     const getStarsRating = () => {
         const res = [];
-        const stars = Math.floor(rating || 5);
+        const stars = Math.floor(rating ?? 5);
 
         for (let i = 1; i < 6; i++) {
             if (i <= stars) {

@@ -15,6 +15,15 @@ export const API = {
         getProductVariantsByProduct: (productId: string) => `${API_URL}/api/product/${productId}/variant`,
         getSimilarProductVariants: `${API_URL}/api/product/variants/similar`,
         getProductVariantByUuid: (uuid: string) => `${API_URL}/api/product/variants/${uuid}`,
+        getAdminProducts: `${API_URL}/api/product/all`,
+        getProductWithProductVariant: (uuid: string) => `${API_URL}/api/product/${uuid}/variant`,
+        updateProduct: (uuid: string) => `${API_URL}/api/product/${uuid}`,
+        updateProductVariant: (productId: string, variantId: string) =>
+            `${API_URL}/api/product/${productId}/variant/${variantId}`,
+        deleteProductVariant: (productId: string, variantId: string) =>
+            `${API_URL}/api/product/${productId}/variant/${variantId}`,
+        createProductVariant: (productId: string) => `${API_URL}/api/product/${productId}/variant`,
+        createProduct: `${API_URL}/api/product`,
     },
     cart: {
         syncCartItems: `${API_URL}/api/cart/sync`,
@@ -31,6 +40,12 @@ export const API = {
     user: {
         me: `${API_URL}/api/user/me`,
         update: `${API_URL}/api/user`,
+        getUsers: `${API_URL}/api/user`,
+        getUsersStats: `${API_URL}/api/user/stats`,
+        getUser: (uuid: string) => `${API_URL}/api/user/${uuid}`,
+        updateUserAdmin: (uuid: string) => `${API_URL}/api/user/${uuid}`,
+        addAdmin: `${API_URL}/api/user/add-admin`,
+        deleteUserAdmin: (uuid: string) => `${API_URL}/api/user/${uuid}`,
     },
 
     upload: {
@@ -67,5 +82,9 @@ export const API = {
     likes: {
         like: (targetId: string, targetType: string) => `${API_URL}/api/like/${targetId}/${targetType}`,
         dislike: (targetId: string, targetType: string) => `${API_URL}/api/like/${targetId}/${targetType}`,
+    },
+
+    tags: {
+        getAllTags: `${API_URL}/api/tag/`,
     },
 };

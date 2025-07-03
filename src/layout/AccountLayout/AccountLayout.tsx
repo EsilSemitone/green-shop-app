@@ -9,7 +9,7 @@ import { AppDispatch } from '../../store/store';
 import { logoutUser } from '../../store/user-slice/async-actions/logout';
 import { cartActions } from '../../store/cart-slice/cart-slice';
 
-export function AccountLayout() {
+export default function AccountLayout() {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 

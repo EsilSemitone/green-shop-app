@@ -55,7 +55,6 @@ export const userSlice = createSlice({
             state.errorMessage = error.error.message ?? null;
         });
         builder.addCase(getProfile.fulfilled, (state, action: PayloadAction<GetMeResponseDto>) => {
-            console.log(1);
             state.profile = action.payload;
         });
         builder.addCase(getProfile.rejected, (state, error) => {

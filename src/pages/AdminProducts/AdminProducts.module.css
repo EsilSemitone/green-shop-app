@@ -1,0 +1,15 @@
+.page {
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.content_options {
+    display: flex;
+    justify-content: end;
+}

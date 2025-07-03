@@ -40,26 +40,9 @@ a {
     color: var(--text-color);
 }
 
-.green_slider .ant-slider-track {
-    background-color: var(--green) !important;
-}
-
-.green_slider {
-    &.ant-slider-track {
-        background-color: var(--green) !important;
-    }
-}
-
-.green_slider .ant-slider-handle::after {
-    box-shadow: 0 0 0 2px var(--green-hover);
-    background-color: #ffffff;
-}
-
-.green_slider .ant-slider-handle::after {
-    box-shadow: 0 0 0 2px var(--green-hover) !important;
-}
-.green_slider:focus .ant-slider-handle::before {
-    box-shadow: 0 0 0 2px var(--green-hover) !important;
+a:hover {
+    text-decoration: none;
+    color: var(--green) !important;
 }
 
 .tabs .ant-tabs-tab-active > .ant-tabs-tab-btn {
@@ -79,4 +62,16 @@ a {
 
 .ant-select-item-option-selected {
     background-color: var(--green-background) !important;
+}
+
+.ant-select-selector:hover {
+    border-color: var(--green) !important;
+}
+
+.ant-select-open .ant-select-selector {
+    border-color: var(--green) !important;
+}
+
+.ant-select-focused .ant-select-selector {
+    border-color: var(--green) !important;
 }

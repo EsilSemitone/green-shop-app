@@ -88,12 +88,6 @@ export function Header() {
                 >
                     Корзина
                 </NavLink>
-                <NavLink
-                    className={({ isActive }) => cn(styles.navigate_item, { [styles.active]: isActive })}
-                    to={ROUTES.shop.blogs}
-                >
-                    Блог
-                </NavLink>
             </div>
             <div className={styles.header_right}>
                 <div className={styles.search_wrapper}>

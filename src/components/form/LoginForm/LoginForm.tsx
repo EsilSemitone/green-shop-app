@@ -15,6 +15,10 @@ import { removeItem } from '../../../store/localstorage/localstorage';
 import { PasswordInput } from '../../input/PasswordInput/PasswordInput';
 import { getAllFavorites } from '../../../store/favorites/async-actions/get-all-favorites';
 import { getProfile } from '../../../store/user-slice/async-actions/get-profile';
+import { Alert } from 'antd';
+import { useEffect } from 'react';
+import { appActions } from '../../../store/app-slice/app.slice';
+import { MESSAGE_TYPE } from '../../../store/app-slice/enums/message-type';
 
 export function LoginForm({ className, setForm, onClose, ...props }: ILoginFormProps) {
     const errorMessage = useSelector((s: RootState) => s.user.errorMessage);
@@ -51,18 +55,17 @@ export function LoginForm({ className, setForm, onClose, ...props }: ILoginFormP
         }
     };
 
+    useEffect(() => {
+        if (errorMessage) {
+            dispatch(appActions.setMessage({ type: MESSAGE_TYPE.ERROR, content: errorMessage }));
+        }
+    }, [errorMessage]);
+
     return (
         <div className={styles.login_form__container}>
             <div className={styles.title}>Введите вашу почту и пароль.</div>
-            <div>
-                {Object.entries(errors).map(([key, b]) => (
-                    <p key={`${b.type}${key}`} className={styles['error']}>
-                        {b.message}
-                    </p>
-                ))}
-                {errorMessage && <p className={styles.error}>{errorMessage}</p>}
-            </div>
             <form {...props} className={cn(styles.login_form, className)} onSubmit={handleSubmit(submit)}>
+                {errors.email && <Alert showIcon message={errors.email.message} type="error" />}
                 <Input
                     {...register('email')}
                     className={cn(styles.login_form__input)}
@@ -70,6 +73,7 @@ export function LoginForm({ className, setForm, onClose, ...props }: ILoginFormP
                     id="email"
                     placeholder="Введите вашу почту"
                 ></Input>
+                {errors.password && <Alert showIcon message={errors.password.message} type="error" />}
                 <PasswordInput
                     register={register}
                     registerName={'password'}

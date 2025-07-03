@@ -21,7 +21,7 @@ import { ApiService } from '../../common/helpers/api.service';
 import { ExtendedOrder, PaymentMethod } from 'contracts-green-shop';
 import { cartActions } from '../../store/cart-slice/cart-slice';
 
-export function Cart() {
+export default function Cart() {
     const dispatch = useDispatch<AppDispatch>();
 
     const cartItems = useSelector((s: RootState) => s.cart.items);

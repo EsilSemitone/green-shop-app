@@ -7,4 +7,5 @@ export const INITIAL_STATE: IProductFilterState = {
     size: null,
     limit: null,
     offset: null,
+    orderBy: null,
 };

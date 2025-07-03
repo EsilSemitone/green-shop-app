@@ -21,4 +21,5 @@ export const categoryInvertMap = new Map<PRODUCT_CATEGORY | undefined, string>([
     [PRODUCT_CATEGORY_ENUM.TRERRARIUMS, 'Террариумы'],
     [PRODUCT_CATEGORY_ENUM.GARDENING, 'Садоводство'],
     [PRODUCT_CATEGORY_ENUM.ACCESSORIES, 'Аксессуары'],
+    [PRODUCT_CATEGORY_ENUM.SEEDS, 'Семена'],
 ]);

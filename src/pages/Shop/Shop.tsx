@@ -1,18 +1,24 @@
 import cn from 'classnames';
 import styles from './Shop.module.css';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { IFilterItemEvent } from './interfaces/category.interface';
 import { categoryInvertMap } from './helpers/category-map';
 import { sizeInvertMap } from './helpers/size-map';
 import { ProductCard } from '../../components/cards/ProductCard/ProductCard';
-import { BlogBlock } from '../../components/BlogBlock/BlogBlock';
 import { ApiService } from '../../common/helpers/api.service';
 import { useQueryParams } from '../../common/hooks/use-query-params';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
 import { IProductFilterState } from '../../store/product-filter-slice/interfaces/product-filter-state.interface';
 import { PRODUCT_FILTER_QUERY } from './constants/product-filter-query-params';
-import { GetProductFilterResponseDto, GetProductVariantsByCriteriaResponseDto, PRODUCT_CATEGORY, SIZE } from 'contracts-green-shop';
+import {
+    GetProductFilterResponseDto,
+    GetProductVariantsByCriteriaResponseDto,
+    ORDER_BY_PRODUCT_VARIANTS,
+    ORDER_BY_PRODUCT_VARIANTS_ENUM,
+    PRODUCT_CATEGORY,
+    SIZE,
+} from 'contracts-green-shop';
 import { productFilterActions } from '../../store/product-filter-slice/product-filter-slice';
 import { Button } from '../../components/common/Button/Button';
 import { upgradeFilterFromQuery } from './helpers/upgrade-filter-from-query';
@@ -20,26 +26,26 @@ import { PAGE_PRODUCTS } from './constants/page-products';
 import { isProductCategory } from 'contracts-green-shop/enums/product-category.ts';
 import { isSize } from 'contracts-green-shop/enums/size.ts';
 import { BASE_PRICE_RANGE } from './constants/base-price-range';
-import { Slider } from 'antd';
 import { Pagination } from '../../components/Pagination/Pagination';
-import { useDebounce } from 'use-debounce';
 import { isOnFavorites } from '../../common/helpers/is-on-favorites';
+import { CustomSlider } from '../../components/Slider/Slider';
+import { Select, Skeleton } from 'antd';
+import { useDebounce } from 'use-debounce';
 
 export function Shop() {
     const dispatch = useDispatch<AppDispatch>();
     const favorites = useSelector((s: RootState) => s.favorites.favorites);
     const filter = useSelector((s: RootState) => s.productFilter);
-    
 
     const { getParam, getParams, setManyParams } = useQueryParams();
     const [filterOptions, setFilterOptions] = useState<GetProductFilterResponseDto | null>(null);
     const [products, setProducts] = useState<GetProductVariantsByCriteriaResponseDto | null>(null);
     const [productsError, setProductsError] = useState<string | null>(null);
 
-    const [sliderValue, setSliderValue] = useState<{ priceFrom: number; priceTo: number }>({
-        priceFrom: BASE_PRICE_RANGE.min,
-        priceTo: BASE_PRICE_RANGE.max,
-    });
+    const [sliderValue, setSliderValue] = useState<[number, number]>([
+        filterOptions?.prices.min ?? BASE_PRICE_RANGE.min,
+        filterOptions?.prices.max ?? BASE_PRICE_RANGE.max,
+    ]);
     const [sliderDebounceValue] = useDebounce(sliderValue, 300);
 
     useEffect(() => {
@@ -61,6 +67,9 @@ export function Shop() {
                     priceTo: priceTo ? Number.parseFloat(priceTo) : options.prices.max,
                     limit: limit ? Number(limit) : PAGE_PRODUCTS,
                     offset: offset ? Number(offset) : 0,
+                    orderBy:
+                        getParam<ORDER_BY_PRODUCT_VARIANTS>(PRODUCT_FILTER_QUERY.orderBy) ??
+                        ORDER_BY_PRODUCT_VARIANTS_ENUM.FIRST_NEW,
                 };
                 dispatch(productFilterActions.setProductFilter(filterState));
             } catch {
@@ -91,10 +100,6 @@ export function Shop() {
         provideProducts(updatedQueries);
     }, [filter]);
 
-    useEffect(() => {
-        dispatch(productFilterActions.setProductFilter(sliderDebounceValue));
-    }, [sliderDebounceValue]);
-
     const setCategory = (e: IFilterItemEvent) => {
         const category = e.target.id;
         if (!category || !isProductCategory(category)) {
@@ -111,16 +116,16 @@ export function Shop() {
         dispatch(productFilterActions.setProductFilter({ size, limit: PAGE_PRODUCTS, offset: 0 }));
     };
 
-    const sliderChange = (value: number | number[]) => {
+    const onChangeSlider = useCallback((value: number | number[]) => {
         if (typeof value === 'number') {
-            console.error('Тип слайдера number а ожидался number[]');
             return;
         }
+        setSliderValue([value[0], value[1]]);
+    }, []);
 
-        setSliderValue({ priceFrom: value[0], priceTo: value[1] });
-    };
-
-    const priceRange = useMemo(() => [sliderValue.priceFrom, sliderValue.priceTo], [sliderValue]);
+    useEffect(() => {
+        dispatch(productFilterActions.setProductFilter({ priceFrom: sliderDebounceValue[0], priceTo: sliderDebounceValue[1] }));
+    }, [sliderDebounceValue]);
 
     const resetFilter = () => {
         const params = {
@@ -130,8 +135,10 @@ export function Shop() {
             priceTo: filterOptions?.prices.max || BASE_PRICE_RANGE.max,
             limit: PAGE_PRODUCTS,
             offset: 0,
+            orderBy: ORDER_BY_PRODUCT_VARIANTS_ENUM.FIRST_NEW,
         };
         dispatch(productFilterActions.setProductFilter(params));
+        setSliderValue([filterOptions?.prices.min ?? BASE_PRICE_RANGE.min, filterOptions?.prices.max ?? BASE_PRICE_RANGE.max]);
     };
 
     const goToPage = (p: number) => {
@@ -148,6 +155,10 @@ export function Shop() {
         }
         return null;
     };
+
+    const onChangeOrderBy = useCallback((value: ORDER_BY_PRODUCT_VARIANTS) => {
+        dispatch(productFilterActions.setProductFilter({ orderBy: value }));
+    }, []);
 
     return (
         <div className={styles.shop}>
@@ -169,81 +180,96 @@ export function Shop() {
                 <div className={styles.filter_menu}>
                     <div className={styles.filter_menu__item}>
                         <div className={styles.filter_menu__title}>Категория</div>
-                        <div className={cn(styles.categories_list, styles.category_inner__block)}>
-                            {filterOptions?.categories.map((category) => {
-                                const currentCategoryName = categoryInvertMap.get(category.category);
-                                if (currentCategoryName) {
-                                    return (
-                                        <div
-                                            id={category.category}
-                                            key={currentCategoryName}
-                                            onClick={setCategory}
-                                            className={cn(styles.categories_item, {
-                                                [styles['active']]: filter.category === category.category,
-                                            })}
-                                        >
-                                            {currentCategoryName}
-                                            <span>{`(${category.count})`}</span>
-                                        </div>
-                                    );
-                                }
-                            })}
-                        </div>
+                        {filterOptions && (
+                            <div className={cn(styles.categories_list, styles.category_inner__block)}>
+                                {filterOptions.categories.map((category) => {
+                                    const currentCategoryName = categoryInvertMap.get(category.category);
+                                    if (currentCategoryName) {
+                                        return (
+                                            <div
+                                                id={category.category}
+                                                key={currentCategoryName}
+                                                onClick={setCategory}
+                                                className={cn(styles.categories_item, {
+                                                    [styles['active']]: filter.category === category.category,
+                                                })}
+                                            >
+                                                {currentCategoryName}
+                                                <span>{`(${category.count})`}</span>
+                                            </div>
+                                        );
+                                    }
+                                })}
+                            </div>
+                        )}
+
+                        {!filterOptions && <Skeleton />}
                     </div>
                     <div className={styles.filter_menu__item}>
                         <div className={styles.filter_menu__title}>Цена</div>
-                        <div className={cn(styles.price_container, styles.category_inner__block)}>
-                            <Slider
-                                range
-                                className="green_slider"
-                                min={filterOptions?.prices.min || BASE_PRICE_RANGE.min}
-                                max={filterOptions?.prices.max || BASE_PRICE_RANGE.max}
-                                value={priceRange}
-                                defaultValue={[
-                                    filterOptions?.prices.min || BASE_PRICE_RANGE.min,
-                                    (filterOptions?.prices.max || BASE_PRICE_RANGE.max) / 2,
-                                ]}
-                                disabled={false}
-                                onChange={sliderChange}
-                            />
-                            <div className={cn(styles.price_info)}>
-                                <span>Цена:</span>
-                                <br />
-                                <span className={cn(styles.price_info__range, styles.green)}>{`${
-                                    filter.priceFrom || BASE_PRICE_RANGE.min
-                                }₽ - ${filter.priceTo || BASE_PRICE_RANGE.min}₽`}</span>
+                        {filterOptions && (
+                            <div className={cn(styles.price_container, styles.category_inner__block)}>
+                                <CustomSlider
+                                    onChangeSlider={onChangeSlider}
+                                    min={filterOptions?.prices.min}
+                                    max={filterOptions?.prices.max}
+                                    value={sliderValue}
+                                ></CustomSlider>
+
+                                <div className={cn(styles.price_info)}>
+                                    <span>Цена:</span>
+                                    <br />
+                                    <span
+                                        className={cn(styles.price_info__range, styles.green)}
+                                    >{`${filter.priceFrom}₽ - ${filter.priceTo}₽`}</span>
+                                </div>
                             </div>
-                        </div>
+                        )}
+                        {!filterOptions && <Skeleton />}
                     </div>
                     <div className={styles.filter_menu__item}>
                         <div className={styles.filter_menu__title}>Размер</div>
-                        <div className={cn(styles.categories_list, styles.category_inner__block)}>
-                            {filterOptions?.sizes.map((s) => {
-                                const currentSizeName = sizeInvertMap.get(s.size);
+                        {filterOptions && (
+                            <div className={cn(styles.categories_list, styles.category_inner__block)}>
+                                {filterOptions.sizes.map((s) => {
+                                    const currentSizeName = sizeInvertMap.get(s.size);
 
-                                if (currentSizeName) {
-                                    return (
-                                        <div
-                                            id={s.size}
-                                            onClick={setSize}
-                                            key={currentSizeName}
-                                            className={cn(styles.categories_item, {
-                                                [styles.active]: filter.size === s.size,
-                                            })}
-                                        >
-                                            {currentSizeName}
-                                            <span>{`(${s.count})`}</span>
-                                        </div>
-                                    );
-                                }
-                            })}
-                        </div>
+                                    if (currentSizeName) {
+                                        return (
+                                            <div
+                                                id={s.size}
+                                                onClick={setSize}
+                                                key={currentSizeName}
+                                                className={cn(styles.categories_item, {
+                                                    [styles.active]: filter.size === s.size,
+                                                })}
+                                            >
+                                                {currentSizeName}
+                                                <span>{`(${s.count})`}</span>
+                                            </div>
+                                        );
+                                    }
+                                })}
+                            </div>
+                        )}
+                        {!filterOptions && <Skeleton />}
                     </div>
                     <div className={styles.filter_menu__item}>
                         <Button onClick={resetFilter}>Сбросить</Button>
                     </div>
                 </div>
                 <div className={styles.products}>
+                    <Select
+                        defaultValue={ORDER_BY_PRODUCT_VARIANTS_ENUM.FIRST_NEW}
+                        style={{ width: 170 }}
+                        onChange={onChangeOrderBy}
+                        options={[
+                            { value: ORDER_BY_PRODUCT_VARIANTS_ENUM.FIRST_NEW, label: 'Сначало новые' },
+                            { value: ORDER_BY_PRODUCT_VARIANTS_ENUM.FIRST_OLD, label: 'Сначало старые' },
+                            { value: ORDER_BY_PRODUCT_VARIANTS_ENUM.FIRST_CHEAP, label: 'Сначало дешевые' },
+                            { value: ORDER_BY_PRODUCT_VARIANTS_ENUM.FIRST_EXPENSIVE, label: 'Сначало дорогие' },
+                        ]}
+                    />
                     <div className={styles.products_container}>
                         {productsError && <div>{productsError}</div>}
                         {products && products.products.length === 0 && <div>Пока нет продуктов, ожидаем поступление</div>}
@@ -252,7 +278,7 @@ export function Shop() {
                                   return (
                                       <ProductCard
                                           uuid={p.uuid}
-                                          key={`${p.uuid}${p.price}`}
+                                          key={`${p.product_variant_id}`}
                                           title={p.name}
                                           price={p.price}
                                           image={p.image}
@@ -266,7 +292,6 @@ export function Shop() {
                     {renderPagination()}
                 </div>
             </div>
-            <BlogBlock></BlogBlock>
         </div>
     );
 }
