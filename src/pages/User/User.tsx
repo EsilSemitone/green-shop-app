@@ -3,8 +3,6 @@ import styles from './User.module.css';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { GetUserResponseDto, ROLES } from 'contracts-green-shop';
 import { ApiService } from '../../common/helpers/api.service';
-import { LoadingOutlined } from '@ant-design/icons';
-import { Spin } from 'antd';
 import { Button } from '../../components/common/Button/Button';
 import { EditField } from '../../components/EditField/EditField';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +10,7 @@ import { appActions } from '../../store/app-slice/app.slice';
 import { MESSAGE_TYPE } from '../../store/app-slice/enums/message-type';
 import { RootState } from '../../store/store';
 import { ROUTES } from '../../common/constants/routes';
+import { Loader } from '../../components/Loader/Loader';
 
 export default function User() {
     const { uuid } = useParams();
@@ -165,7 +164,7 @@ export default function User() {
                     </div>
                 </>
             )}
-            {!userData && <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />}
+            {!userData && <Loader></Loader>}
         </div>
     );
 }

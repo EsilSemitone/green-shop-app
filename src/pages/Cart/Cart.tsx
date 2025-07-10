@@ -20,6 +20,8 @@ import { Radio } from '../../components/Radio/Radio';
 import { ApiService } from '../../common/helpers/api.service';
 import { ExtendedOrder, PaymentMethod } from 'contracts-green-shop';
 import { cartActions } from '../../store/cart-slice/cart-slice';
+import { appActions } from '../../store/app-slice/app.slice';
+import { MESSAGE_TYPE } from '../../store/app-slice/enums/message-type';
 
 export default function Cart() {
     const dispatch = useDispatch<AppDispatch>();
@@ -96,7 +98,7 @@ export default function Cart() {
 
     const createOrder = async () => {
         if (!address || !activePayment) {
-            console.log('Не выбран адрес или способ оплаты');
+            dispatch(appActions.setMessage({ type: MESSAGE_TYPE.ERROR, content: 'Не выбран адрес или способ оплаты' }));
             return;
         }
         const create = async (address_id: string, payment_method: PAYMENT_METHOD) => {

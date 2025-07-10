@@ -44,7 +44,7 @@ export function EditField({
                 </>
             )}
             {isEdit && (
-                <>
+                <div className={styles.edit}>
                     <Input
                         autoFocus
                         onChange={(e) => {
@@ -53,14 +53,16 @@ export function EditField({
                         {...inputProps}
                         value={currenValue}
                     />
-                    <CheckOutlined onClick={save} />
-                    <StopOutlined
-                        onClick={() => {
-                            setIsEdit(false);
-                            setCurrentValue(oldFiled.current);
-                        }}
-                    />
-                </>
+                    <div className={styles.edit_props}>
+                        <CheckOutlined onClick={save} />
+                        <StopOutlined
+                            onClick={() => {
+                                setIsEdit(false);
+                                setCurrentValue(oldFiled.current);
+                            }}
+                        />
+                    </div>
+                </div>
             )}
         </div>
     );

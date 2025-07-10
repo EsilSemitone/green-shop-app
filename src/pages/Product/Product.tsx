@@ -16,9 +16,9 @@ import { removeToFavorites } from '../../store/favorites/async-actions/remove-to
 import { addToFavorites } from '../../store/favorites/async-actions/add-to-favorites';
 import { useProduct } from '../../common/hooks/use-product';
 import { ProductReviews } from '../../components/ProductReviews/ProductReviews';
-import { Flex, Spin, Tabs } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import { Tabs } from 'antd';
 import { Image } from 'antd';
+import { Loader } from '../../components/Loader/Loader';
 
 export default function Product() {
     const dispatch = useDispatch<AppDispatch>();
@@ -101,9 +101,7 @@ export default function Product() {
     return (
         <>
             {!productData && (
-                <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
-                    <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
-                </Flex>
+                <Loader></Loader>
             )}
             {productData && (
                 <div className={cn(styles.product_container)}>

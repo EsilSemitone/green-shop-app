@@ -9,6 +9,7 @@ import { Link } from 'react-router';
 import { ROUTES } from '../../common/constants/routes';
 import { orderStatusColorMap } from './helpers/order-status-color-map';
 import { ORDER_STATUS_COLOR } from './constants/order-status.color';
+import { orderStatusMap } from '../../common/helpers/order/order-status.map';
 
 export const OrderList = memo(({ orders }: IOrderListProps) => {
     const renderStatus = (status: ORDER_STATUS) => {
@@ -16,13 +17,13 @@ export const OrderList = memo(({ orders }: IOrderListProps) => {
 
         return (
             <Tag color={color} key={status}>
-                {status}
+                {orderStatusMap.get(status) || status}
             </Tag>
         );
     };
 
     return (
-        <Table className={styles.order_list} dataSource={orders} pagination={{}} scroll={{ y: 600, x: 700 }}>
+        <Table rowKey="uuid" className={styles.order_list} dataSource={orders} pagination={{}} scroll={{ y: 600, x: 700 }}>
             <Column
                 title="Id"
                 dataIndex="uuid"

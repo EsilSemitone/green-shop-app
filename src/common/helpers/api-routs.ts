@@ -60,6 +60,8 @@ export const API = {
         create: `${API_URL}/api/order`,
         my: `${API_URL}/api/order/my`,
         details: (uuid: string) => `${API_URL}/api/order/${uuid}`,
+        all: `${API_URL}/api/order/all`,
+        update: (uuid: string) => `${API_URL}/api/order/${uuid}`,
     },
 
     favorites: {
@@ -86,5 +88,6 @@ export const API = {
 
     tags: {
         getAllTags: `${API_URL}/api/tag/`,
+        createTag: `${API_URL}/api/tag/`,
     },
 };

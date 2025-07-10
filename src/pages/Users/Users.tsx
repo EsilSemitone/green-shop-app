@@ -1,17 +1,17 @@
-import { Avatar, Checkbox, CheckboxProps, Select, Spin, Table } from 'antd';
+import { Avatar, Checkbox, CheckboxProps, Select, Table } from 'antd';
 import styles from './Users.module.css';
 import Column from 'antd/es/table/Column';
 import { Link } from 'react-router';
 import { ROUTES } from '../../common/constants/routes';
 import { useUsers } from '../../common/hooks/use-users';
 import { useQueryParams } from '../../common/hooks/use-query-params';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { GetAllUsersRequestQueryDto, isOrderByUsers, ORDER_BY_USERS, ORDER_BY_USERS_ENUM } from 'contracts-green-shop';
 import { USERS_PAGE_LIMIT } from './constants/users-page-limit';
-import { LoadingOutlined } from '@ant-design/icons';
 import { DEFAULT_QUERY } from './constants/default-query';
 import { SearchInput } from '../../components/input/SearchInput/SearchInput';
 import { useDebounce } from 'use-debounce';
+import { Loader } from '../../components/Loader/Loader';
 
 export default function Users() {
     const { searchParams, setParam, setManyParams, getAll, getParam, deleteParam } = useQueryParams();
@@ -50,9 +50,12 @@ export default function Users() {
         }
     }, [searchValue]);
 
-    const handleChangeOrderBy = (value: ORDER_BY_USERS) => {
-        setParam('orderBy', value);
-    };
+    const handleChangeOrderBy = useCallback(
+        (value: ORDER_BY_USERS) => {
+            setParam('orderBy', value);
+        },
+        [setParam],
+    );
 
     const onChangeIsAdmin: CheckboxProps['onChange'] = (e) => {
         setParam('isAdmin', String(e.target.checked));
@@ -86,6 +89,7 @@ export default function Users() {
                         ></SearchInput>
                     </div>
                     <Table
+                        rowKey="uuid"
                         className={styles.users_list}
                         dataSource={users}
                         pagination={{
@@ -110,7 +114,7 @@ export default function Users() {
                         <Column
                             title="Id"
                             dataIndex="uuid"
-                            key="id"
+                            key="uuid"
                             render={(uuid: string) => {
                                 return (
                                     <Link className={styles.link} to={ROUTES.admin.userDynamic(uuid)}>
@@ -150,7 +154,7 @@ export default function Users() {
                     </Table>
                 </div>
             )}
-            {isLoad && <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />}
+            {isLoad && <Loader></Loader>}
         </div>
     );
 }
