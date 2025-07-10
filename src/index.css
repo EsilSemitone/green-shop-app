@@ -75,3 +75,53 @@ a:hover {
 .ant-select-focused .ant-select-selector {
     border-color: var(--green) !important;
 }
+
+.ant-table-wrapper .ant-pagination-item-active {
+    border-color: var(--green);
+}
+
+.ant-table-wrapper .ant-pagination-item-active a {
+    color: var(--green);
+}
+
+.ant-picker-focused:focus-within {
+    border-color: var(--green);
+}
+
+.ant-picker:hover {
+    border-color: var(--green) !important;
+}
+
+.ant-picker:focus-within {
+    border-color: var(--green);
+}
+
+.ant-picker-active-bar {
+    background: var(--green) !important;
+}
+
+.ant-picker-cell-range-start div {
+    background: var(--green) !important;
+}
+
+.ant-picker-cell-range-end div {
+    background: var(--green) !important;
+}
+.ant-picker-cell-range-start::before {
+    background: var(--line-color) !important;
+}
+.ant-picker-cell-range-end::before {
+    background: var(--line-color) !important;
+}
+
+.ant-picker-cell-in-range::before {
+    background: var(--line-color) !important;
+}
+
+.ant-picker-cell-in-range div {
+    background: var(--line-color) !important;
+}
+
+.ant-picker-cell-today div::before {
+    border-color: var(--green) !important;
+}

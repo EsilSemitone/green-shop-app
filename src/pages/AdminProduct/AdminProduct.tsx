@@ -1,15 +1,13 @@
 import cn from 'classnames';
 import styles from './AdminProduct.module.css';
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetProductVariantsByProductResponseDto, PRODUCT_CATEGORY, UpdateProductRequestDto } from 'contracts-green-shop';
-import { Spin } from 'antd';
 import { ApiService } from '../../common/helpers/api.service';
 import { AxiosError } from 'axios';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { appActions } from '../../store/app-slice/app.slice';
 import { MESSAGE_TYPE } from '../../store/app-slice/enums/message-type';
-import { LoadingOutlined } from '@ant-design/icons';
 import { EditField } from '../../components/EditField/EditField';
 import { Button } from '../../components/common/Button/Button';
 import { EditImage } from '../../components/EditImage/EditImage';
@@ -17,6 +15,7 @@ import { EditFieldSelect } from '../../components/EditFieldSelect/EditFieldSelec
 import { categoryInvertMap } from '../Shop/helpers/category-map';
 import { ProductVariantCard } from '../../components/ProductVariantCard/ProductVariantCard';
 import { CreateProductVariantModal } from '../../components/modal/CreateProductVariantModal/CreateProductVariantModal';
+import { Loader } from '../../components/Loader/Loader';
 
 export default function AdminProduct() {
     const dispatch = useDispatch();
@@ -26,10 +25,7 @@ export default function AdminProduct() {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     useEffect(() => {
-        if (isModalOpen === true) {
-            return;
-        }
-        if (!uuid) {
+        if (isModalOpen === true || !uuid) {
             return;
         }
         const provideProduct = async () => {
@@ -132,6 +128,12 @@ export default function AdminProduct() {
         setIsModalOpen(false);
     }, []);
 
+    const editCategoryOptions = useMemo(() => {
+        return Array.from(categoryInvertMap).map(([value, label]) => {
+            return { value, label };
+        });
+    }, []);
+
     return (
         <div className={styles.page}>
             {!isLoad && product && (
@@ -188,9 +190,7 @@ export default function AdminProduct() {
                                     onSave={onSaveProductField}
                                     fieldName={'category'}
                                     middleware={(arg: string) => categoryInvertMap.get(arg as PRODUCT_CATEGORY)}
-                                    options={Array.from(categoryInvertMap).map(([value, label]) => {
-                                        return { value, label };
-                                    })}
+                                    options={editCategoryOptions}
                                 ></EditFieldSelect>
                             </div>
                             <div className={styles.product_field}>
@@ -216,7 +216,7 @@ export default function AdminProduct() {
                     </div>
                 </>
             )}
-            {isLoad && <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />}
+            {isLoad && <Loader></Loader>}
             {isModalOpen && product && (
                 <CreateProductVariantModal
                     isOpen={isModalOpen}

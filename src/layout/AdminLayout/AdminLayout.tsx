@@ -62,6 +62,32 @@ export default function AdminLayout() {
                     >
                         <div>Добавить продукт</div>
                     </NavLink>
+                    <NavLink
+                        className={({ isActive }) => cn(styles.menu_item, { [styles.active]: isActive })}
+                        to={ROUTES.admin.tags}
+                    >
+                        <div>Теги</div>
+                    </NavLink>
+                </div>
+            ),
+            showArrow: false,
+        },
+        {
+            key: '3',
+            label: (
+                <div className={styles.menu_navigate_item}>
+                    <img className={styles.icon} src="/icons/cart-icon.svg" alt="Иконка корзины" />
+                    Заказы
+                </div>
+            ),
+            children: (
+                <div>
+                    <NavLink
+                        className={({ isActive }) => cn(styles.menu_item, { [styles.active]: isActive })}
+                        to={ROUTES.admin.orders}
+                    >
+                        <div>Заказы</div>
+                    </NavLink>
                 </div>
             ),
             showArrow: false,
@@ -78,7 +104,7 @@ export default function AdminLayout() {
             </header>
             <div className={styles.content}>
                 <div className={styles.menu}>
-                    <Collapse defaultActiveKey={['1', '2']} ghost items={userItem} />
+                    <Collapse defaultActiveKey={['1', '2', '3']} ghost items={userItem} />
                 </div>
                 <div className={styles.outlet}>
                     <Outlet></Outlet>

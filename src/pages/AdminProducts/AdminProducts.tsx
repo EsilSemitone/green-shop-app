@@ -6,12 +6,12 @@ import { useDebounce } from 'use-debounce';
 import { PRODUCTS_PAGE_LIMIT } from './constants/product-page-limit';
 import { GetAllProductsRequestQueryDto, PRODUCT_CATEGORY } from 'contracts-green-shop';
 import { SearchInput } from '../../components/input/SearchInput/SearchInput';
-import { Avatar, Spin, Table } from 'antd';
+import { Avatar, Table } from 'antd';
 import Column from 'antd/es/table/Column';
 import { ROUTES } from '../../common/constants/routes';
 import { Link } from 'react-router';
 import { categoryInvertMap } from '../Shop/helpers/category-map';
-import { LoadingOutlined } from '@ant-design/icons';
+import { Loader } from '../../components/Loader/Loader';
 
 export default function AdminProducts() {
     const { searchParams, setParam, setManyParams, getAll, getParam, deleteParam } = useQueryParams();
@@ -50,9 +50,12 @@ export default function AdminProducts() {
         setSearchString(event.target.value);
     }, []);
 
-    const paginateTableHandle = (pageNumber: number) => {
-        setParam('offset', String((pageNumber - 1) * PRODUCTS_PAGE_LIMIT));
-    };
+    const paginateTableHandle = useCallback(
+        (pageNumber: number) => {
+            setParam('offset', String((pageNumber - 1) * PRODUCTS_PAGE_LIMIT));
+        },
+        [setParam],
+    );
 
     return (
         <div className={styles.page}>
@@ -68,6 +71,7 @@ export default function AdminProducts() {
                         ></SearchInput>
                     </div>
                     <Table
+                        rowKey="uuid"
                         className={styles.products_list}
                         dataSource={products}
                         pagination={{
@@ -130,7 +134,7 @@ export default function AdminProducts() {
                     </Table>
                 </div>
             )}
-            {isLoad && <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />}
+            {isLoad && <Loader></Loader>}
         </div>
     );
 }

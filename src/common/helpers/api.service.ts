@@ -61,6 +61,12 @@ import {
     CreateProductVariantRequestDto,
     CreateProductRequestDto,
     CreateProductResponseDto,
+    CreateTagRequestDto,
+    CreateTagResponseDto,
+    GetAllOrdersRequestQueryDto,
+    GetAllOrdersResponseDto,
+    UpdateOrderRequestDto,
+    UpdateOrderResponseDto,
 } from 'contracts-green-shop';
 import { API } from './api-routs';
 import { IRegisterForm } from '../../components/form/RegisterForm/interfaces/register-form';
@@ -338,6 +344,21 @@ export class ApiService {
 
     static async createProduct(createData: CreateProductRequestDto): Promise<CreateProductResponseDto> {
         const { data } = await api.post<CreateProductResponseDto>(API.product.createProduct, createData);
+        return data;
+    }
+
+    static async createTag(createData: CreateTagRequestDto): Promise<CreateTagResponseDto> {
+        const { data } = await api.post<CreateTagResponseDto>(API.tags.createTag, createData);
+        return data;
+    }
+
+    static async getAdminOrders(query: GetAllOrdersRequestQueryDto): Promise<GetAllOrdersResponseDto> {
+        const { data } = await api.get<GetAllOrdersResponseDto>(API.order.all, { params: query });
+        return data;
+    }
+
+    static async updateOrder(orderId: string, updateData: UpdateOrderRequestDto): Promise<UpdateOrderResponseDto> {
+        const { data } = await api.patch<UpdateOrderResponseDto>(API.order.update(orderId), updateData);
         return data;
     }
 }

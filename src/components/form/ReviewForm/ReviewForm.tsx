@@ -1,10 +1,10 @@
 import { Form } from 'react-router';
 import { IReviewFormProps } from './ReviewForm.props';
 import { Input } from '../../common/Input/Input';
-import { Rate } from 'antd';
+import { Alert, Rate } from 'antd';
 import styles from './ReviewForm.module.css';
 import { Button } from '../../common/Button/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReviewFormSchema } from './common/review-form-schema';
@@ -12,14 +12,17 @@ import { ApiService } from '../../../common/helpers/api.service';
 import { IReviewForm } from './interfaces/review-form.interface';
 import { AxiosError } from 'axios';
 import { RootState } from '../../../store/store';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { appActions } from '../../../store/app-slice/app.slice';
+import { MESSAGE_TYPE } from '../../../store/app-slice/enums/message-type';
 
 export function ReviewForm({ addReview, product_id, product_variant_id }: IReviewFormProps) {
+    const dispatch = useDispatch();
     const userName = useSelector((s: RootState) => s.user.profile?.name);
     const userImage = useSelector((s: RootState) => s.user.profile?.photo_image);
 
     const [rate, setRate] = useState<number>(0);
-    const [error, setError] = useState('');
+    const [error, setError] = useState<string | null | undefined>(null);
 
     const {
         register,
@@ -55,26 +58,25 @@ export function ReviewForm({ addReview, product_id, product_variant_id }: IRevie
         }
     };
 
+    useEffect(() => {
+        if (error) {
+            dispatch(appActions.setMessage({ type: MESSAGE_TYPE.ERROR, content: error }));
+            setError(null);
+        }
+    }, [error]);
+
     return (
         <Form className={styles.form} onSubmit={handleSubmit(submit)}>
             <div className={styles.title}>Ваш отзыв</div>
-            {Object.entries(errors).map(([key, b]) => (
-                <div key={`${b.type}${key}`} className={styles.error}>
-                    {b.message}
-                </div>
-            ))}
-            {error && (
-                <div key={`error`} className={styles.error}>
-                    {error}
-                </div>
-            )}
             <Rate
                 value={rate}
                 onChange={(val) => {
                     setRate(val);
                 }}
             />
+            {errors?.title && <Alert showIcon message={errors.title?.message} type="error" />}
             <Input {...register('title')} type="text" placeholder="Ваше общее впечатление"></Input>
+            {errors?.description && <Alert showIcon message={errors.description?.message} type="error" />}
             <Input {...register('description')} className={styles.review_description} type="text" placeholder="Ваш отзыв"></Input>
             <Button>Сохранить</Button>
         </Form>

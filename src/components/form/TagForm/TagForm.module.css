@@ -1,0 +1,8 @@
+.tag_form__container {
+}
+
+.tag_form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}

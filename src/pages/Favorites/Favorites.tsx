@@ -10,6 +10,7 @@ export function Favorites() {
             <div className={styles.favorites_container}>
                 {favorites.map((f) => (
                     <ProductCard
+                        key={f.uuid}
                         title={f.name}
                         price={f.price}
                         image={f.image}

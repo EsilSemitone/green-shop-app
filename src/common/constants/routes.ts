@@ -28,6 +28,10 @@ export const ROUTES = {
         product: '/admin/products/:uuid',
         productDynamic: (uuid: string) => `/admin/products/${uuid}`,
         createProduct: '/admin/create-product',
+        tags: '/admin/tags',
+        orders: '/admin/orders',
+        order: '/admin/orders/:uuid',
+        orderDynamic: (uuid: string) => `/admin/orders/${uuid}`,
     },
     error: '*',
 };

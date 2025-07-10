@@ -19,6 +19,7 @@ import { Alert } from 'antd';
 import { useEffect } from 'react';
 import { appActions } from '../../../store/app-slice/app.slice';
 import { MESSAGE_TYPE } from '../../../store/app-slice/enums/message-type';
+import { userActions } from '../../../store/user-slice/user.slice';
 
 export function LoginForm({ className, setForm, onClose, ...props }: ILoginFormProps) {
     const errorMessage = useSelector((s: RootState) => s.user.errorMessage);
@@ -58,6 +59,7 @@ export function LoginForm({ className, setForm, onClose, ...props }: ILoginFormP
     useEffect(() => {
         if (errorMessage) {
             dispatch(appActions.setMessage({ type: MESSAGE_TYPE.ERROR, content: errorMessage }));
+            dispatch(userActions.clearError());
         }
     }, [errorMessage]);
 

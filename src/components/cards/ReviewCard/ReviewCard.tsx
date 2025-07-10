@@ -82,7 +82,7 @@ export const ReviewCart = memo(({ review, userId, deleteReview, addReviewComment
                         <ReviewCommentForm
                             addReviewComment={addReviewComment}
                             review_id={review.uuid}
-                            authorReviewName={review.name}
+                            authorReviewName={review.name || 'Пользователь'}
                         ></ReviewCommentForm>
                     )}
 

@@ -7,9 +7,9 @@ import { ResetPassword } from './pages/ResetPassword/ResetPassword';
 import { Shop } from './pages/Shop/Shop';
 import { Layout } from './layout/Layout/Layout';
 import { lazy, Suspense } from 'react';
-import { Flex, Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import { Flex } from 'antd';
 import { AdminGuard } from './components/guard/AuthGuard/AdminGuard';
+import { Loader } from './components/Loader/Loader';
 
 const AccountLayout = lazy(() => import('./layout/AccountLayout/AccountLayout'));
 const AccountMe = lazy(() => import('./pages/AccountMe/AccountMe'));
@@ -25,6 +25,8 @@ const UsersStats = lazy(() => import('./pages/UsersStats/UsersStats'));
 const AdminProducts = lazy(() => import('./pages/AdminProducts/AdminProducts'));
 const AdminProduct = lazy(() => import('./pages/AdminProduct/AdminProduct'));
 const CreateProduct = lazy(() => import('./pages/CreateProduct/CreateProduct'));
+const AdminTags = lazy(() => import('./pages/AdminTags/AdminTags'));
+const AdminOrders = lazy(() => import('./pages/AdminOrders/AdminOrders'));
 
 export const ROUTER = createBrowserRouter([
     {
@@ -45,7 +47,7 @@ export const ROUTER = createBrowserRouter([
                     <Suspense
                         fallback={
                             <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
-                                <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
+                                <Loader></Loader>
                             </Flex>
                         }
                     >
@@ -59,7 +61,7 @@ export const ROUTER = createBrowserRouter([
                     <Suspense
                         fallback={
                             <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
-                                <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
+                                <Loader></Loader>
                             </Flex>
                         }
                     >
@@ -80,7 +82,7 @@ export const ROUTER = createBrowserRouter([
                 <Suspense
                     fallback={
                         <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
-                            <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
+                            <Loader></Loader>
                         </Flex>
                     }
                 >
@@ -99,7 +101,7 @@ export const ROUTER = createBrowserRouter([
                     <Suspense
                         fallback={
                             <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
-                                <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
+                                <Loader></Loader>
                             </Flex>
                         }
                     >
@@ -113,7 +115,7 @@ export const ROUTER = createBrowserRouter([
                     <Suspense
                         fallback={
                             <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
-                                <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
+                                <Loader></Loader>
                             </Flex>
                         }
                     >
@@ -127,7 +129,7 @@ export const ROUTER = createBrowserRouter([
                     <Suspense
                         fallback={
                             <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
-                                <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
+                                <Loader></Loader>
                             </Flex>
                         }
                     >
@@ -141,7 +143,7 @@ export const ROUTER = createBrowserRouter([
                     <Suspense
                         fallback={
                             <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
-                                <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
+                                <Loader></Loader>
                             </Flex>
                         }
                     >
@@ -161,7 +163,7 @@ export const ROUTER = createBrowserRouter([
             <Suspense
                 fallback={
                     <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
-                        <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
+                        <Loader></Loader>
                     </Flex>
                 }
             >
@@ -183,7 +185,7 @@ export const ROUTER = createBrowserRouter([
                     <Suspense
                         fallback={
                             <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
-                                <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
+                                <Loader></Loader>
                             </Flex>
                         }
                     >
@@ -197,7 +199,7 @@ export const ROUTER = createBrowserRouter([
                     <Suspense
                         fallback={
                             <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
-                                <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
+                                <Loader></Loader>
                             </Flex>
                         }
                     >
@@ -211,7 +213,7 @@ export const ROUTER = createBrowserRouter([
                     <Suspense
                         fallback={
                             <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
-                                <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
+                                <Loader></Loader>
                             </Flex>
                         }
                     >
@@ -225,7 +227,7 @@ export const ROUTER = createBrowserRouter([
                     <Suspense
                         fallback={
                             <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
-                                <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
+                                <Loader></Loader>
                             </Flex>
                         }
                     >
@@ -239,7 +241,7 @@ export const ROUTER = createBrowserRouter([
                     <Suspense
                         fallback={
                             <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
-                                <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
+                                <Loader></Loader>
                             </Flex>
                         }
                     >
@@ -253,11 +255,53 @@ export const ROUTER = createBrowserRouter([
                     <Suspense
                         fallback={
                             <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
-                                <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
+                                <Loader></Loader>
                             </Flex>
                         }
                     >
                         <CreateProduct></CreateProduct>
+                    </Suspense>
+                ),
+            },
+            {
+                path: ROUTES.admin.tags,
+                element: (
+                    <Suspense
+                        fallback={
+                            <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
+                                <Loader></Loader>
+                            </Flex>
+                        }
+                    >
+                        <AdminTags></AdminTags>
+                    </Suspense>
+                ),
+            },
+            {
+                path: ROUTES.admin.orders,
+                element: (
+                    <Suspense
+                        fallback={
+                            <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
+                                <Loader></Loader>
+                            </Flex>
+                        }
+                    >
+                        <AdminOrders></AdminOrders>
+                    </Suspense>
+                ),
+            },
+            {
+                path: ROUTES.admin.order,
+                element: (
+                    <Suspense
+                        fallback={
+                            <Flex align="center" gap="middle" style={{ height: '100%', padding: '50px' }}>
+                                <Loader></Loader>
+                            </Flex>
+                        }
+                    >
+                        <Order></Order>
                     </Suspense>
                 ),
             },

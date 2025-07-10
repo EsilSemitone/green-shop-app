@@ -3,8 +3,8 @@ import { Link } from 'react-router';
 import { ROUTES } from '../../common/constants/routes';
 import { useOrders } from '../../common/hooks/use-orders';
 import { OrderList } from '../../components/OrderList/OrderList';
-import { LoadingOutlined } from '@ant-design/icons';
-import { Flex, Spin } from 'antd';
+import { Flex } from 'antd';
+import { Loader } from '../../components/Loader/Loader';
 
 export default function Orders() {
     const { orders } = useOrders();
@@ -14,7 +14,7 @@ export default function Orders() {
             <h1>Мои заказы</h1>
             {orders === null && (
                 <Flex style={{ height: '100%', padding: '50px' }}>
-                    <Spin indicator={<LoadingOutlined style={{ fontSize: 48, color: 'green' }} spin />} />
+                    <Loader></Loader>
                 </Flex>
             )}
             {orders && orders.length === 0 && (

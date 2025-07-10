@@ -17,7 +17,7 @@
     "antd": "^5.26.2",
     "axios": "^1.8.4",
     "classnames": "^2.5.1",
-    "contracts-green-shop": "^1.4.2",
+    "contracts-green-shop": "^1.5.2",
     "dayjs": "^1.11.13",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

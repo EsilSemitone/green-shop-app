@@ -1,0 +1,10 @@
+.tag_cart {
+    box-shadow: 17px 4px 10px -10px rgba(0, 0, 0, 0.71);
+    background-color: var(--background-color);
+    padding: 1rem;
+}
+
+.tag_name {
+    font-weight: 600;
+    font-size: 1.1rem;
+}

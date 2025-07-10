@@ -14,7 +14,7 @@ export function Footer({ className, ...props }: IFooterProps) {
             <div className={styles.footer_bottom}>
                 <div className={styles.footer_bottom__item}>
                     <img src="/footer/location-icon.svg" alt="Иконка локации" />
-                    70 West Buckingham Ave. Farmingdale, NY 11735
+                    г. Городской ул. Уличная 123
                 </div>
                 <div className={styles.footer_bottom__item}>
                     <img src="/footer/mail-icon.svg" alt="Иконка письма" />
@@ -22,10 +22,10 @@ export function Footer({ className, ...props }: IFooterProps) {
                 </div>
                 <div className={styles.footer_bottom__item}>
                     <img src="/footer/phone-icon.svg" alt="Иконка телефона" />
-                    +88 01911 717 490
+                    +123123123123
                 </div>
             </div>
-            <div className={styles.footer_right}>© 2021 GreenShop. Все права защищены.</div>
+            <div className={styles.footer_right}>© 2025 GreenShop. Все права защищены.</div>
         </div>
     );
 }

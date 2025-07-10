@@ -20,6 +20,7 @@ import { Alert } from 'antd';
 import { useEffect } from 'react';
 import { appActions } from '../../../store/app-slice/app.slice';
 import { MESSAGE_TYPE } from '../../../store/app-slice/enums/message-type';
+import { userActions } from '../../../store/user-slice/user.slice';
 
 export function RegisterForm({ className, onClose, ...props }: IRegisterFormProps) {
     const dispatch = useDispatch<AppDispatch>();
@@ -53,6 +54,7 @@ export function RegisterForm({ className, onClose, ...props }: IRegisterFormProp
     useEffect(() => {
         if (errorMessage) {
             dispatch(appActions.setMessage({ type: MESSAGE_TYPE.ERROR, content: errorMessage }));
+            dispatch(userActions.clearError());
         }
     }, [errorMessage]);
 
